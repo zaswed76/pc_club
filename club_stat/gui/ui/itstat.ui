@@ -195,14 +195,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="start">
        <property name="text">
         <string>старт</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="stop">
        <property name="text">
         <string>стоп</string>
        </property>
@@ -222,8 +222,8 @@
   <zorder>label_6</zorder>
   <zorder>lineEdit_4</zorder>
   <zorder>label_7</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>pushButton_2</zorder>
+  <zorder>start</zorder>
+  <zorder>stop</zorder>
   <zorder>horizontalSpacer</zorder>
  </widget>
  <resources/>
