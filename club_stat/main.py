@@ -10,7 +10,7 @@ adr = "http://adminold.itland.enes.tech/index.php/map"
 class Main:
     def __init__(self):
         app = QtWidgets.QApplication(sys.argv)
-        app.setStyleSheet(open('club_stat/css/style.css', "r").read())
+        # app.setStyleSheet(open('club_stat/css/style.css', "r").read())
         self.gui = ItStat()
         self.gui.show()
         self.gui.form.start.clicked.connect(
@@ -29,10 +29,10 @@ class Main:
         web.log_in(login_id, password_id, submit_name,
                         login, password)
 
-def main():
-    main = Main()
+# def main():
+#     main = Main()
 
 
 
 if __name__ == '__main__':
-    main()
+    Main()
