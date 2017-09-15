@@ -10,7 +10,7 @@ adr = "http://adminold.itland.enes.tech/index.php/map"
 class Main:
     def __init__(self):
         app = QtWidgets.QApplication(sys.argv)
-        # app.setStyleSheet(open('css/style.css', "r").read())
+        app.setStyleSheet(open('club_stat/css/style.css', "r").read())
         self.gui = ItStat()
         self.gui.show()
         self.gui.form.start.clicked.connect(
