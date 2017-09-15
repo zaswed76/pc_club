@@ -1,5 +1,5 @@
 
-from clube_stat import webdriver, config, club
+from club_stat import webdriver, config, club
 
 
 
