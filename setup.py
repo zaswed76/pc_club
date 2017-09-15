@@ -15,7 +15,7 @@ setup(
                 join(dirname(__file__), 'README.rst')).read(),
         install_requires=[],
         entry_points={
-            'console_scripts':
+            'gui_scripts':
                 ['itstat = club_stat.main:main']
         }
 
