@@ -7,7 +7,7 @@ club stat
 
 **Установка**::
 
-  pip install --upgrade
+  pip install --upgrade git+https://github.com/zaswed76/pc_club.git
 
 **или (что бы установить в каталог пользователя)**::
 
