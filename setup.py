@@ -16,7 +16,7 @@ setup(
         install_requires=["PyQt5"],
         entry_points={
             'console_scripts':
-                ['itstat = club_stat.main:main']
+                ['itstat = club_stat.main:Main']
         }
 
 )
