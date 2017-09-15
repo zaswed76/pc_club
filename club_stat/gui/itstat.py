@@ -10,8 +10,10 @@ class ItStat(QtWidgets.QMainWindow):
         super().__init__()
         self.center = QtWidgets.QFrame()
         self.setCentralWidget(self.center)
-        self.w = uic.loadUi(ui_pth, self.center)
+        self.form = uic.loadUi(ui_pth, self.center)
         # self.w.setFixedSize(500, 250)
+
+
 
 if __name__ == '__main__':
     UI_DIR = "../club_stat/gui/ui"

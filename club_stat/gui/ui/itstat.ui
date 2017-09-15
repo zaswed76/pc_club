@@ -47,11 +47,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="adress">
          <property name="styleSheet">
-          <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
-border-color: rgb(190, 190, 190);
-border: 1px solid;</string>
+          <string notr="true"/>
          </property>
         </widget>
        </item>
@@ -76,11 +74,9 @@ border: 1px solid;</string>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_2">
+        <widget class="QLineEdit" name="login">
          <property name="styleSheet">
-          <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
-border-color: rgb(190, 190, 190);
-border: 1px solid;</string>
+          <string notr="true"/>
          </property>
         </widget>
        </item>
@@ -105,11 +101,9 @@ border: 1px solid;</string>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_3">
+        <widget class="QLineEdit" name="password">
          <property name="styleSheet">
-          <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
-border-color:#ababab;
-border: 1px solid;</string>
+          <string notr="true"/>
          </property>
         </widget>
        </item>
@@ -138,8 +132,7 @@ border: 1px solid;</string>
      <item>
       <widget class="QTimeEdit" name="timeEdit">
        <property name="styleSheet">
-        <string notr="true">border-color: rgb(218, 218, 218);
-border: 1px solid;</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -173,9 +166,7 @@ border: 1px solid;</string>
      <item>
       <widget class="QLineEdit" name="lineEdit_4">
        <property name="styleSheet">
-        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
-border-color: rgb(226, 226, 226);
-border: 1px solid;</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -221,7 +212,7 @@ border: 1px solid;</string>
    </item>
   </layout>
   <zorder>label</zorder>
-  <zorder>lineEdit</zorder>
+  <zorder>adress</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget_2</zorder>
   <zorder>timeEdit</zorder>

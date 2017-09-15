@@ -12,18 +12,26 @@ password_id = 'enter_password'
 submit_name = 'but_m'
 login = ""
 password = ""
-class Main:
-    def __init__(self):
-        self.web = webdriver.WebDriver(adr, webdriver.WebDriver.Firefox)
-        self.web.log_in(login_id, password_id, submit_name,
-                        login, password)
+
+
 
 def main():
 
     app = QtWidgets.QApplication(sys.argv)
-    # app.setStyleSheet(open('./etc/{0}.qss'.format('style'), "r").read())
-    main = ItStat()
-    main.show()
+    app.setStyleSheet(open('css/style.css', "r").read())
+    gui = ItStat()
+    gui.show()
+
+    login_id = 'enter_login'
+    password_id = 'enter_password'
+    submit_name = 'but_m'
+    login = ""
+    password = ""
+    print(gui.form.adress)
+
+    # web = webdriver.WebDriver(adr, webdriver.WebDriver.Firefox)
+    # web.log_in(login_id, password_id, submit_name,
+    #                     login, password)
     sys.exit(app.exec_())
 
 
