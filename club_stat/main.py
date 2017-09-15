@@ -18,6 +18,7 @@ class Main:
                         login, password)
 
 def main():
+
     app = QtWidgets.QApplication(sys.argv)
     # app.setStyleSheet(open('./etc/{0}.qss'.format('style'), "r").read())
     main = ItStat()
