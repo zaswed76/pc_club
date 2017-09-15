@@ -29,6 +29,9 @@ class Main:
         web.log_in(login_id, password_id, submit_name,
                         login, password)
 
+def main():
+    main = Main()
+
 
 
 if __name__ == '__main__':
