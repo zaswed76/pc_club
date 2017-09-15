@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtWidgets
 
+
 from club_stat import webdriver, config, club
 from gui.itstat import ItStat
 

@@ -13,7 +13,7 @@ setup(
         include_package_data=True,
         long_description=open(
                 join(dirname(__file__), 'README.rst')).read(),
-        install_requires=[],
+        install_requires=["PyQt5"],
         entry_points={
             'gui_scripts':
                 ['itstat = club_stat.main:main']
