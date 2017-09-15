@@ -1,0 +1,2 @@
+
+recursive-include club_stat/etc *.json
