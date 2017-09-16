@@ -2,8 +2,8 @@ import os
 import sys
 from PyQt5 import QtWidgets, uic
 
-
-ui_pth = "./ui/itstat.ui"
+root = os.path.join(os.path.dirname(__file__))
+ui_pth = os.path.join(root, "ui/itstat.ui")
 
 
 class ItStat(QtWidgets.QMainWindow):
