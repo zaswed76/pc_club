@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtWidgets, uic
 
 
-ui_pth = r"C:\Users\Cassa\Desktop\Serg\project\pc_club\club_stat\gui\ui\itstat.ui"
+ui_pth = "./ui/itstat.ui"
 
 
 class ItStat(QtWidgets.QMainWindow):
