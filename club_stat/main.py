@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt5 import QtWidgets
 
@@ -7,10 +8,13 @@ from club_stat.gui.itstat import ItStat
 
 adr = "http://adminold.itland.enes.tech/index.php/map"
 
+root = os.path.join(os.path.dirname(__file__))
+css_style = os.path.join(root, "css/style.css")
+
 class Main:
     def __init__(self):
         app = QtWidgets.QApplication(sys.argv)
-        # app.setStyleSheet(open('club_stat/css/style.css', "r").read())
+        app.setStyleSheet(open(css_style, "r").read())
         self.gui = ItStat()
         self.gui.show()
         self.gui.form.start.clicked.connect(
@@ -29,8 +33,7 @@ class Main:
         web.log_in(login_id, password_id, submit_name,
                         login, password)
 
-# def main():
-#     main = Main()
+
 
 
 
