@@ -1,12 +1,12 @@
 from os.path import join, dirname
 
-import pyomo
+import club_stat
 from setuptools import setup, find_packages
 
 setup(
         name="clube_stat",
         # в __init__ пакета
-        version=pyomo.__version__,
+        version=club_stat.__version__,
         packages=find_packages(
                 exclude=["*.exemple", "*.exemple.*", "exemple.*",
                          "exemple"]),
