@@ -1,2 +1,3 @@
 
 recursive-include club_stat/etc *.json
+recursive-include club_stat/gui/ui *.ui
