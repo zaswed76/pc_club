@@ -1,11 +1,11 @@
 
 class Keeper:
-    def __init__(self, data, keeper):
+    def __init__(self,  keeper):
         self.keeper = keeper
-        self.data = data
 
-    def write(self):
-        self.keeper.write(self.data)
 
-    def load(self):
-        self.keeper.load(self.data)
+    def write(self, data, file):
+        self.keeper.write(data)
+
+    def load(self, file):
+        self.keeper.load(file)
