@@ -5,7 +5,7 @@ class Keeper:
 
 
     def write(self, data, file):
-        self.keeper.write(data)
+        self.keeper.write(data, file)
 
     def load(self, file):
-        self.keeper.load(file)
+        return self.keeper.load(file)

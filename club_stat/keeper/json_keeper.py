@@ -3,14 +3,15 @@ import json
 
 
 class JsonKeeper:
-    def __init__(self, data_dir):
-        self.data_dir = data_dir
+    def __init__(self):
+        pass
 
 
     def write(self, data, file):
-        self.write(data)
+        with open(file, 'w') as outfile:
+            json.dump(data, outfile)
 
-    # def load(self, file):
-    #     with open(config_path, "r") as f:
-    #         conf = json.load(f)
+    def load(self, file):
+        with open(file, "r") as f:
+            return json.load(f)
 

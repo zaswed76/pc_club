@@ -12,6 +12,7 @@ adr = "http://adminold.itland.enes.tech/index.php/map"
 ROOT = os.path.join(os.path.dirname(__file__))
 CSS_STYLE = os.path.join(ROOT, "css/style.css")
 DATA_DIR = os.path.join(ROOT, "data")
+DATA_FILE = os.path.join(DATA_DIR, "data.JSON")
 
 class Main:
     def __init__(self):
@@ -19,10 +20,16 @@ class Main:
         app.setStyleSheet(open(CSS_STYLE, "r").read())
         self.gui = ItStat()
         self.gui.show()
-        self.keeper = keeper.Keeper(json_keeper.JsonKeeper(DATA_DIR))
+        self.keeper = keeper.Keeper(json_keeper.JsonKeeper())
+        self.keeper.load(DATA_FILE)
         self.gui.form.start.clicked.connect(self.start)
         self.gui.form.stop.clicked.connect(self.stop)
         sys.exit(app.exec_())
+
+
+
+    def write_data(self):
+        self.keeper.write()
 
     def get_data(self):
         print("получаем данные")
