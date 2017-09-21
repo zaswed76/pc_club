@@ -23,12 +23,12 @@ class Main:
         self.gui = ItStat()
         self.gui.closeEvent = self.closeEvent
         self.gui.show()
-        self.club = "les":club.Club(club.Club.LES, club.Statistics())
 
 
 
-        self.keeper = keeper.Keeper(json_keeper.JsonKeeper())
-        self.keeper.load(DATA_FILE)
+
+        self.keeper = keeper.Keeper(json_keeper.JsonKeeper(DATA_FILE))
+        self.keeper.load()
         self.gui.form.start.clicked.connect(self.start)
         self.gui.form.stop.clicked.connect(self.stop)
         sys.exit(app.exec_())
@@ -40,14 +40,20 @@ class Main:
 
     def read_data(self):
         data = {}
-        dt = datetime.datetime.now()
-        for n in self.club.names:
-            self.web.select_club(n.value)
-            self.club.add_data(n.value, self.web.get_data("taken"))
-            data[dt] = {n.value: taken}
-            time.sleep(1)
+        data
+        d = datetime.datetime.now()
+        dt = d.date().strftime('%Y-%m-%d')
+
+        tm = d.time().strftime('%H-%M-%S.%f')
+        self.web.select_club("4")
+        taken =  self.web.get_data("taken")
+        data[dt] = {}
+        data[dt].update({tm: taken})
         print(data)
-        # self.keeper.write()
+
+        time.sleep(1)
+        self.keeper.update(data)
+        self.keeper.write()
 
     def start(self):
         adr = self.gui.form.adress.text()

@@ -1,3 +1,6 @@
-d = "4"
 
-print(d.isdigit())
+
+d = {}
+dt = 1
+tm = 12
+d.update()
