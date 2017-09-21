@@ -9,3 +9,6 @@ class Keeper:
 
     def load(self, file):
         return self.keeper.load(file)
+
+    def data(self):
+        return self.keeper.data

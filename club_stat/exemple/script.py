@@ -6,15 +6,15 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 
-browser = webdriver.Firefox()
-
+# browser = webdriver.Firefox()
+browser = webdriver.Chrome()
 
 browser.get("http://adminold.itland.enes.tech/index.php/map")
 
 username = browser.find_element_by_id('enter_login')
-username.send_keys("")
+username.send_keys("zaswed")
 passw = browser.find_element_by_id('enter_password')
-passw.send_keys("")
+passw.send_keys("fasadAQ9")
 
 m = browser.find_element_by_class_name('but_m')
 print(m)
@@ -23,7 +23,7 @@ m.click()
 select = Select(browser.find_element_by_id('club_id'))
 
 # select.select_by_visible_text('IT Land Les')
-select.select_by_value('4')
+select.select_by_value('3')
 
 
 taken = browser.find_element_by_id('taken')

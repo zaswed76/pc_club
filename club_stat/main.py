@@ -1,5 +1,7 @@
 import os
 import sys
+
+import time, datetime
 from PyQt5 import QtWidgets, QtCore
 
 from club_stat import webdriver, config, club
@@ -19,7 +21,12 @@ class Main:
         app = QtWidgets.QApplication(sys.argv)
         app.setStyleSheet(open(CSS_STYLE, "r").read())
         self.gui = ItStat()
+        self.gui.closeEvent = self.closeEvent
         self.gui.show()
+        self.club = "les":club.Club(club.Club.LES, club.Statistics())
+
+
+
         self.keeper = keeper.Keeper(json_keeper.JsonKeeper())
         self.keeper.load(DATA_FILE)
         self.gui.form.start.clicked.connect(self.start)
@@ -31,9 +38,16 @@ class Main:
     def write_data(self):
         self.keeper.write()
 
-    def get_data(self):
-        print("получаем данные")
-        print("записываем даные")
+    def read_data(self):
+        data = {}
+        dt = datetime.datetime.now()
+        for n in self.club.names:
+            self.web.select_club(n.value)
+            self.club.add_data(n.value, self.web.get_data("taken"))
+            data[dt] = {n.value: taken}
+            time.sleep(1)
+        print(data)
+        # self.keeper.write()
 
     def start(self):
         adr = self.gui.form.adress.text()
@@ -42,16 +56,23 @@ class Main:
         submit_name = 'but_m'
         login = self.gui.form.login.text()
         password = self.gui.form.password.text()
-        # web = webdriver.WebDriver(adr, webdriver.WebDriver.Firefox)
-        # web.log_in(login_id, password_id, submit_name,
-        #                 login, password)
+        self.web = webdriver.WebDriver(adr, webdriver.WebDriver.Chrome)
+        self.web.log_in(login_id, password_id, submit_name,
+                        login, password)
 
         self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.get_data)
-        self.timer.start(1000)
+        self.timer.timeout.connect(self.read_data)
+        self.timer.start(1000 * 5)
 
     def stop(self):
         self.timer.stop()
+
+    def closeEvent(self, *args, **kwargs):
+        try:
+            self.web.close()
+        except AttributeError as er:
+            pass
+        self.gui.close()
 
 
 if __name__ == '__main__':

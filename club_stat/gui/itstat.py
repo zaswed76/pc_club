@@ -13,7 +13,8 @@ class ItStat(QtWidgets.QMainWindow):
         self.setCentralWidget(self.center)
         self.form = uic.loadUi(ui_pth, self.center)
 
-
+    def closeEvent(self, *args, **kwargs):
+        pass
 
 
 
