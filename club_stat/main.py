@@ -39,20 +39,18 @@ class Main:
         self.keeper.write()
 
     def read_data(self):
-        data = {}
-        data
+
         d = datetime.datetime.now()
         dt = d.date().strftime('%Y-%m-%d')
 
         tm = d.time().strftime('%H-%M-%S.%f')
         self.web.select_club("4")
         taken =  self.web.get_data("taken")
-        data[dt] = {}
-        data[dt].update({tm: taken})
-        print(data)
+
+
 
         time.sleep(1)
-        self.keeper.update(data)
+
         self.keeper.write()
 
     def start(self):
