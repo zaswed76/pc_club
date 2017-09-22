@@ -10,6 +10,7 @@ def test_create_table():
     return dates
 
 
+
 t1 = datetime.date.today()
 s = "2017-09-21"
 t2 = datetime.datetime.strptime(s, "%Y-%m-%d")

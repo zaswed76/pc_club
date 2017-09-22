@@ -10,9 +10,11 @@ cur = con.cursor()
 #     print(m[0])
 #
 # print("-------------------")
+date = "1.09.2017"
+dt = datetime.datetime.strptime(date, "%d.%m.%Y").date()
+print(dt)
 
-t = datetime.datetime(2017, 9, 22, 1, 00, 00, 0)
+cur.execute('select * from club WHERE dt = ?', (dt,))
 
-cur.execute('select * from club WHERE data_time = ? AND club="IT_Land_Les"', (t,))
 for i in cur.fetchall():
     print(i)

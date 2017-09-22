@@ -2,10 +2,8 @@ import sqlite3 as sql
 import datetime
 from club_stat.exemple import dateex
 
-con = sql.connect("data.db")
-cur = con.cursor()
-
-table = """\
+def table():
+    table = """\
     CREATE TABLE IF NOT EXISTS club
     (
     dt date,
@@ -21,17 +19,29 @@ table = """\
     school INTEGER
     );
 """
-cur.executescript(table)
+    return table
 
-for dt in dateex.test_create_table():
-    data_ls = (dt, "IT_Land_Les", 7,7,4,4,6,7,3,9)
-    data_ak = (dt, "IT_Land_Ak", 8,2,4,7,6,7,45,9)
-    data_dt = (dt, "IT_Land_Dream", 22,2,4,5,6,7,8,9)
-    data_troya = (dt, "IT_Land_Troya", 12,2,4,5,6,7,8,9)
+def dates():
+    lst = []
+    d = (1, 2, 3 ,4 ,5)
+    for i in d:
+        strdate = "{}.09.2017".format(i)
+        lst.append(datetime.datetime.strptime(strdate, "%d.%m.%Y").date())
+    return lst
 
-    ins = 'insert into club values (?,?,?,?,?,?,?,?,?,?)'
-    for d in [data_ls, data_ak, data_dt, data_troya]:
-        cur.execute(ins, d)
+
+con = sql.connect("data.db")
+cur = con.cursor()
+cur.executescript(table())
+
+d = datetime.datetime.now().date()
+dt = datetime.datetime.now()
+lst = (d, dt, "les", 1, 1,1,1,1,1,1,1)
+
+ins = 'insert into club values (?,?,?,?,?,?,?,?,?,?,?)'
+cur.execute(ins, lst)
 con.commit()
 cur.close()
 con.close()
+
+

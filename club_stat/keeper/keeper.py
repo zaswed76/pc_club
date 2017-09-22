@@ -25,12 +25,14 @@ if __name__ == '__main__':
     json_keep = json_keeper.JsonKeeper(f)
     kp = Keeper(json_keep)
     print(kp.data)
-    data = {}
-    d = datetime.datetime.now()
-    dt = d.date().strftime('%Y-%m-%d')
+    t = {}
+    t.update({1:1})
+    d = {1: t}
+    kp.update(d)
+    print(kp.data)
 
-    tm = d.time().strftime('%H-%M-%S.%f')
-    print(tm)
-    data[dt] = {tm: 3}
-    kp.update(data)
-    kp.write()
+    t = {}
+    t.update({2:2})
+    d = {1: t}
+    kp.update(d)
+    print(kp.data)
