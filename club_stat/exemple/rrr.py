@@ -1,9 +1,12 @@
 
 
-name = "Vlad"
+import datetime
 
-for n, i in enumerate(range(100)):
-    print(n, name)
+l = "23.09.2017 09:00"
+dt = datetime.datetime.strptime(l, "%d.%m.%Y %H:%M").date()
+
+print(type(dt))
+
 
 
 
