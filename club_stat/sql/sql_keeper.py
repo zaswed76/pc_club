@@ -86,7 +86,7 @@ class Keeper():
 
     def samp_date(self, date):
         d = datetime.datetime.strptime(date, "%d.%m.%Y").date()
-        self.cursor.execute("SELECT * FROM club WHERE dt = ?", (d,))
+        self.cursor.execute("SELECT data_time, taken FROM club WHERE dt = ?", (d,))
         return self.cursor.fetchall()
 
     @staticmethod
@@ -106,7 +106,7 @@ class Keeper():
             start = date_start
             end = date_end
         self.cursor.execute(
-            "SELECT * FROM club WHERE dt BETWEEN ? AND ?", (start, end))
+            "SELECT data_time, taken FROM club WHERE dt BETWEEN ? AND ?", (start, end))
         return self.cursor.fetchall()
 
     def sample_all(self):
@@ -115,23 +115,30 @@ class Keeper():
 
     def sample_range_time(self, start, end, sample_hour=False):
         res = []
-        start_date = self.str_to_date_time(start).date()
-        end_date = self.str_to_date_time(end).date()
+        start_date_time = self.str_to_date_time(start)
+        start_date = start_date_time.date()
+        end_date_time = self.str_to_date_time(end)
+        end_date = end_date_time.date()
 
         start_time = self.str_to_date_time(start).time()
         end_time = self.str_to_date_time(end).time()
 
         range_date = self.sample_range_date(start_date, end_date)
+
         for line in range_date:
-            sql_time = datetime.datetime.strptime(line[1], "%Y-%m-%d %H:%M:%S.%f").time()
-            # print(sql_time.minute == 0)
-            if start_time <= sql_time <= end_time:
+            sql_date = datetime.datetime.strptime(line[0], "%Y-%m-%d %H:%M:%S.%f")
+            sql_time = sql_date.time()
+            #
+            # if (sql_time <
+            #         datetime.datetime.strptime("23:59:59", "%H:%M:%S").time()):
+            #     print(start_time, sql_time, end_time)
+            if start_date_time <= sql_date <= end_date_time:
                 if sample_hour:
                     if sql_time.minute == 0:
                         res.append(line)
                 else:
                     res.append(line)
-
+        print(res)
         return tuple(res)
 
     def sample_hour(self, start, end):
@@ -147,22 +154,26 @@ if __name__ == '__main__':
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
-    r = kp.sample_hour("24.09.2017 09:00:00", "24.09.2017 19:00:00")
+    # Keeper.seq_print(kp.sample_all())
+    # region Description
+    r = kp.sample_hour("24.09.2017 09:00:00", "25.09.2017 09:00:00")
+
     lst = []
     for line in r:
         ln = list(line)
-        st = ln[1]
+        st = ln[0]
         t = datetime.datetime.strptime(st, "%Y-%m-%d %H:%M:%S.%f").time()
-        new_t = t.strftime("%H:%M")
-        ln[1] = new_t
+        new_t = t.strftime("%H")
+        ln[0] = new_t
         lst.append(ln)
-    print(lst)
+
     import pandas as pd
     df = pd.DataFrame(lst)
 
     writer = pd.ExcelWriter('output.xlsx')
     df.to_excel(writer,'Sheet1')
     writer.save()
+    # endregion
     # endregion
 
     # s = kp.sample_range_time("24.09.2017 12:00", "24.09.2017 18:00")

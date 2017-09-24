@@ -32,6 +32,7 @@ class Main:
 
         self.gui.form.start.clicked.connect(self.start)
         self.gui.form.stop.clicked.connect(self.stop)
+        self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
         sys.exit(app.exec_())
 
 
