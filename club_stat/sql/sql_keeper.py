@@ -2,8 +2,27 @@ import datetime
 
 import sqlite3
 
-from club_stat.sql import sql, table
+def table():
+    table = """\
+    CREATE TABLE club
+    (
+    dt date,
+    data_time timestam,
+    club TEXT,
+    load INTEGER,
+    taken INTEGER,
+    free INTEGER,
+    guest INTEGER,
+    resident INTEGER,
+    admin INTEGER,
+    workers INTEGER,
+    school INTEGER
+    );
+"""
+    return table
 
+def ins_club_stat():
+    return 'insert into club values (?,?,?,?,?,?,?,?,?,?,?)'
 
 def seq_line():
     d = datetime.datetime.now().date()
@@ -37,7 +56,11 @@ class Keeper():
         self.path = path
 
     def create_table(self, table):
-        self.cursor.executescript(table)
+
+        try:
+            self.cursor.executescript(table)
+        except sqlite3.OperationalError:
+            pass
 
     def add_line(self, ins, seq):
         self.cursor.execute(ins, seq)
@@ -47,6 +70,9 @@ class Keeper():
 
     def open_cursor(self):
         self.cursor = self.connect.cursor()
+
+    def commit(self):
+        self.connect.commit()
 
     def close(self):
         self.connect.commit()
@@ -69,9 +95,10 @@ class Keeper():
 
     @staticmethod
     def str_to_date_time(line):
-        return datetime.datetime.strptime(line, "%d.%m.%Y %H:%M")
 
-    def samp_range_date(self, date_start, date_end):
+        return datetime.datetime.strptime(line, "%d.%m.%Y %H:%M:%S")
+
+    def sample_range_date(self, date_start, date_end):
         if isinstance(date_start, str) and isinstance(date_end, str):
             start = self.str_to_date(date_start)
             end = self.str_to_date(date_end)
@@ -82,11 +109,11 @@ class Keeper():
             "SELECT * FROM club WHERE dt BETWEEN ? AND ?", (start, end))
         return self.cursor.fetchall()
 
-    def samp_all(self):
+    def sample_all(self):
         self.cursor.execute("SELECT * FROM club")
         return self.cursor.fetchall()
 
-    def samp_range_time(self, start, end):
+    def sample_range_time(self, start, end, sample_hour=False):
         res = []
         start_date = self.str_to_date_time(start).date()
         end_date = self.str_to_date_time(end).date()
@@ -94,32 +121,45 @@ class Keeper():
         start_time = self.str_to_date_time(start).time()
         end_time = self.str_to_date_time(end).time()
 
-        range_date = self.samp_range_date(start_date, end_date)
+        range_date = self.sample_range_date(start_date, end_date)
         for line in range_date:
-            sql_time = datetime.datetime.strptime(line[1], "%Y-%m-%d %H:%M:%S").time()
+            sql_time = datetime.datetime.strptime(line[1], "%Y-%m-%d %H:%M:%S.%f").time()
+            # print(sql_time.minute == 0)
             if start_time <= sql_time <= end_time:
-                res.append(line)
+                if sample_hour:
+                    if sql_time.minute == 0:
+                        res.append(line)
+                else:
+                    res.append(line)
+
         return tuple(res)
+
+    def sample_hour(self, start, end):
+        return self.sample_range_time(start, end, sample_hour=True)
+
 
 
 
 if __name__ == '__main__':
     # region открыть базу
-    path = "data.db"
+    # path = "data.db"
+    path = r"D:\Serg\project\pc_club\club_stat\data\data.db"
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
+    r = kp.sample_hour("24.09.2017 09:00:00", "24.09.2017 17:00:00")
+    print(r)
     # endregion
 
-    s = kp.samp_range_time("28.09.2017 12:00", "28.09.2017 18:00")
-    Keeper.seq_print(s)
-    # Keeper.seq_print(kp.samp_range_date("24.09.2017", "26.09.2017"))
+    # s = kp.sample_range_time("24.09.2017 12:00", "24.09.2017 18:00")
+    # Keeper.seq_print(s)
+    # Keeper.seq_print(kp.sample_range_date("24.09.2017", "26.09.2017"))
 
     # start_date = Keeper.str_to_date("24.09.2017")
     # end_date = Keeper.str_to_date("24.09.2017")
-    # Keeper.seq_print(kp.samp_range_date(start_date, end_date))
+    # Keeper.seq_print(kp.sample_range_date(start_date, end_date))
 
-    # Keeper.seq_print(kp.samp_all())
+    # Keeper.seq_print(kp.sample_all())
 
     # res = kp.samp_date("23.09.2017")
     # Keeper.seq_print(res)
@@ -147,13 +187,6 @@ if __name__ == '__main__':
 
     # endregion
 
-    # # # kp.create_table(table.table())
+    # kp.create_table(table())
     kp.close()
-    # # dt_tm = datetime.datetime.strptime('2017-09-23 11:39:24.000000', "%Y-%m-%d %H:%M:%S.%f")
-    # ttt = '2017-09-23 15:00:00'
-    # dt_tm = datetime.datetime.strptime(ttt, "%Y-%m-%d %H:%M:%S").hour
-    # # print(dt_tm, 888)
-    # kp.cursor.execute("select * from club WHERE dt > ?", (dt_tm,))
-    # print("--------------")
-    # Keeper.seq_print(kp.cursor.fetchall())
-    # print("-------------------")
+

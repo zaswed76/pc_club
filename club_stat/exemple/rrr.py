@@ -1,12 +1,15 @@
 
+import collections
+stat = collections.OrderedDict()
 
-import datetime
+a = [1, 2, 3]
 
-l = "23.09.2017 09:00"
-dt = datetime.datetime.strptime(l, "%d.%m.%Y %H:%M").date()
+stat_names = ["load", "taken", "free", "guest",
+             "resident", "admin", "workers", "school"]
 
-print(type(dt))
+for opt in stat_names:
+    stat[opt] = opt
 
-
-
+a.extend(stat.values())
+print(a)
 

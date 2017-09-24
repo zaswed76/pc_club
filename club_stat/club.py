@@ -92,6 +92,6 @@ if __name__ == '__main__':
     # clubs.add_club()
     print(clubs.les.name)
     print(clubs.les.id)
-    print(clubs.les.field_name)
+    print(clubs["les"].field_name)
     print(clubs["les"].name)
     # print(clubs.les.append_stat("taken", 4))
