@@ -15,6 +15,16 @@ import sqlite3
 # df.to_excel(writer,'Sheet1')
 # writer.save()
 
-fields = ["data", "time", "taken"]
-seq = ("24.09.2017", "09:00", 1), ("24.09.2017", "09:00", 2)
-print(pd.DataFrame(list(seq), columns=fields, index=[1,2]))
+# fields = ["data", "time", "taken"]
+# seq = (("24.09.2017", "09:00", 1), ("24.09.2017", "09:00", 2))
+# print(pd.DataFrame(list(seq), columns=fields, index=[1,2]))
+
+s = ((1, 2), (3, 4))
+
+l = []
+for line in s:
+    ln = list(line)
+    ln[0] = "w"
+    l.append(ln)
+print(l)
+

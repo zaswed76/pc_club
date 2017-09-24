@@ -147,8 +147,22 @@ if __name__ == '__main__':
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
-    r = kp.sample_hour("24.09.2017 09:00:00", "24.09.2017 17:00:00")
-    print(r)
+    r = kp.sample_hour("24.09.2017 09:00:00", "24.09.2017 19:00:00")
+    lst = []
+    for line in r:
+        ln = list(line)
+        st = ln[1]
+        t = datetime.datetime.strptime(st, "%Y-%m-%d %H:%M:%S.%f").time()
+        new_t = t.strftime("%H:%M")
+        ln[1] = new_t
+        lst.append(ln)
+    print(lst)
+    import pandas as pd
+    df = pd.DataFrame(lst)
+
+    writer = pd.ExcelWriter('output.xlsx')
+    df.to_excel(writer,'Sheet1')
+    writer.save()
     # endregion
 
     # s = kp.sample_range_time("24.09.2017 12:00", "24.09.2017 18:00")
