@@ -16,23 +16,41 @@ ROOT = os.path.join(os.path.dirname(__file__))
 CSS_STYLE = os.path.join(ROOT, "css/style.css")
 DATA_DIR = os.path.join(ROOT, "data")
 DATA_FILE = os.path.join(DATA_DIR, "data.db")
+ICON_DIR = os.path.join(ROOT, "resource/icons")
+
+def qt_message_handler(mode, context, message):
+    if mode == QtCore.QtInfoMsg:
+        mode = 'INFO'
+    elif mode == QtCore.QtWarningMsg:
+        mode = 'WARNING'
+    elif mode == QtCore.QtCriticalMsg:
+        mode = 'CRITICAL'
+    elif mode == QtCore.QtFatalMsg:
+        mode = 'FATAL'
+    else:
+        mode = 'DEBUG'
+    print('qt_message_handler: line: %d, func: %s(), file: %s' % (
+          context.line, context.function, context.file))
+    print('  %s: %s\n' % (mode, message))
+
+QtCore.qInstallMessageHandler(qt_message_handler)
 
 class Main:
     def __init__(self):
+        QtCore.qDebug('something informative')
         app = QtWidgets.QApplication(sys.argv)
         app.setStyleSheet(open(CSS_STYLE, "r").read())
-        self.gui = ItStat()
+        self.gui = ItStat(ICON_DIR)
         self.gui.closeEvent = self.closeEvent
         self.gui.show()
-
-
-
+        self.gui.set_tray_icon()
+        self.gui.set_menu()
         self.clubs = club.Clubs()
         self.clubs["les"] = club.Club(club.Club.LES, club.Statistics())
-
         self.gui.form.start.clicked.connect(self.start)
         self.gui.form.stop.clicked.connect(self.stop)
         self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.gui.statusBar()
         sys.exit(app.exec_())
 
 
@@ -74,8 +92,10 @@ class Main:
         login = self.gui.form.login.text()
         password = self.gui.form.password.text()
         self.web = webdriver.WebDriver(adr, webdriver.WebDriver.Chrome)
+        self.gui.statusBar().showMessage('открыл браузер')
         self.web.log_in(login_id, password_id, submit_name,
                         login, password)
+        self.gui.statusBar().showMessage('залогинился')
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.read_data)
@@ -94,13 +114,13 @@ class Main:
         except AttributeError as er:
             print(er)
 
-    def closeEvent(self, *args, **kwargs):
-        try:
-            self.web.close()
-            self.keeper.close()
-        except AttributeError as er:
-            print(er)
-        self.gui.close()
+    def closeEvent(self, event):
+        event.ignore()
+        self.gui.hide()
+        self.gui.tray_icon.showMessage(
+            "Tray Program",
+            "Application was minimized to Tray",
+            QtWidgets.QSystemTrayIcon.Information, 2000)
 
 
 if __name__ == '__main__':
