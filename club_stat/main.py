@@ -4,7 +4,8 @@ import sys
 import collections
 import time, datetime
 from PyQt5 import QtWidgets, QtCore
-
+from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
+import time
 from club_stat import webdriver, config, club
 from club_stat.sql import sql_keeper
 
@@ -35,6 +36,19 @@ def qt_message_handler(mode, context, message):
 
 QtCore.qInstallMessageHandler(qt_message_handler)
 
+class Worker(QObject):
+    finished = pyqtSignal()
+    intReady = pyqtSignal(int)
+
+
+    @pyqtSlot()
+    def procCounter(self): # A slot takes no params
+        for i in range(1, 100):
+            time.sleep(1)
+            self.intReady.emit(i)
+
+        self.finished.emit()
+
 class Main:
     def __init__(self):
         QtCore.qDebug('something informative')
@@ -52,6 +66,16 @@ class Main:
         self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.gui.statusBar()
         sys.exit(app.exec_())
+
+    def init_thread(self):
+        self.obj = Worker()  # no parent!
+        self.thread = QThread()  # no parent!
+
+        self.obj.intReady.connect(self.onIntReady)
+        self.obj.moveToThread(self.thread)
+        self.obj.finished.connect(self.thread.quit)
+        self.thread.started.connect(self.obj.procCounter)
+
 
 
 
