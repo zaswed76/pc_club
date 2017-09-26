@@ -19,25 +19,28 @@ class ItStat(QtWidgets.QMainWindow):
         icon_path = os.path.join(self.icon_dir, 'exit.png')
         exitAction = QtWidgets.QAction(QtGui.QIcon(icon_path), '&Exit', self)
         exitAction.setStatusTip('Exit application')
-        exitAction.triggered.connect(QtWidgets.qApp.quit)
+        exitAction.triggered.connect(self.exit)
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(exitAction)
+
+    def exit(self):
+        QtWidgets.qApp.quit()
 
 
     def set_tray_icon(self):
         self.tray_icon = QtWidgets.QSystemTrayIcon()
         self.tray_icon.setIcon(QtGui.QIcon(os.path.join(self.icon_dir, 'tray.png')))
         show_action = QtWidgets.QAction("Show", self)
-        quit_action = QtWidgets.QAction("Exit", self)
+
         hide_action = QtWidgets.QAction("Hide", self)
         show_action.triggered.connect(self.show)
         hide_action.triggered.connect(self.hide)
-        quit_action.triggered.connect(QtWidgets.qApp.quit)
+
         tray_menu = QtWidgets.QMenu()
         tray_menu.addAction(show_action)
         tray_menu.addAction(hide_action)
-        tray_menu.addAction(quit_action)
+
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
 

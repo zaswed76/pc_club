@@ -19,6 +19,8 @@ CSS_STYLE = os.path.join(ROOT, "css/style.css")
 DATA_DIR = os.path.join(ROOT, "data")
 DATA_FILE = os.path.join(DATA_DIR, "data.db")
 ICON_DIR = os.path.join(ROOT, "resource/icons")
+ETC = os.path.join(ROOT, "etc")
+CONFIG_PATH = os.path.join(ETC, "default.json")
 
 def qt_message_handler(mode, context, message):
     if mode == QtCore.QtInfoMsg:
@@ -48,16 +50,10 @@ class Web(QObject):
         self.clubs = club.Clubs()
         self.clubs["les"] = club.Club(club.Club.LES, club.Statistics())
 
-    # def __getattr__(self, attr):
-    #     print("Yep, I know", attr)
-
-
     def read_data(self):
         stat = collections.OrderedDict()
         stat_names = ["load", "taken", "free", "guest",
                      "resident", "admin", "workers", "school"]
-
-
         self.diver.select_club("4")
         time.sleep(1)
         date_time = datetime.datetime.now()
@@ -72,7 +68,7 @@ class Web(QObject):
         seq = [date, date_time, self.clubs["les"].field_name]
         seq.extend(stat.values())
         seq = tuple(seq)
-
+        self.str_web_process.emit("{} - {} - {}".format(seq[1], seq[2], seq[4]))
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
@@ -100,39 +96,31 @@ class Web(QObject):
             self.diver.log_in(login_id, password_id, submit_name,
                             login, password)
             self.str_web_process.emit("залогинился")
-
             self.keeper = sql_keeper.Keeper(DATA_FILE)
             self.keeper.open_connect()
             self.keeper.open_cursor()
             self.keeper.create_table(sql_keeper.table())
+            self.str_web_process.emit("открыта база данных")
             self.running = True
 
-        # while self.running:
-        #     self.read_data()
+        while self.running:
+            self.read_data()
+            time.sleep(5)
 
-        # self.finished.emit()
+        self.finished.emit()
 
 class Main:
     def __init__(self):
         QtCore.qDebug('something informative')
-        app = QtWidgets.QApplication(sys.argv)
-        app.setStyleSheet(open(CSS_STYLE, "r").read())
-        self.init_thread()
-        self.gui = ItStat(ICON_DIR)
-        self.gui.closeEvent = self.closeEvent
-        self.gui.show()
-        self.gui.set_tray_icon()
-        self.gui.set_menu()
 
-        self.gui.form.start.clicked.connect(self.start)
-        self.gui.form.stop.clicked.connect(self.stop)
-        self.gui.form.stop.setDisabled(not self.web.running)
-        self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.gui.statusBar()
+        self.cfg = config.load(CONFIG_PATH)
 
-        sys.exit(app.exec_())
+        print(self.cfg)
 
-    def init_thread(self):
+        self._init_thread()
+        self._init_gui()
+
+    def _init_thread(self):
         self.web = Web(self)
         self.thread = QThread()
         self.web.str_web_process.connect(self.on_web_process)
@@ -140,8 +128,60 @@ class Main:
         self.web.finished.connect(self.thread.quit)
         self.thread.started.connect(self.web.web_process_start)
 
+    def _fields_valid(self):
+        l = self.gui.form.login.text()
+        a = self.gui.form.adress.text()
+        p = self.gui.form.password.text()
+        r = all([l, a, p])
+        return r
+
+    def _init_gui(self):
+        app = QtWidgets.QApplication(sys.argv)
+        app.setStyleSheet(open(CSS_STYLE, "r").read())
+        self.gui = ItStat(ICON_DIR)
+        self.gui.closeEvent = self.closeEvent
+        self.gui.show()
+        self.gui.set_tray_icon()
+        self.gui.set_menu()
+
+        # start
+
+        self.gui.form.start.clicked.connect(self.start)
+        self.gui.form.start.setDisabled(not self._fields_valid())
+
+
+        self.gui.form.stop.clicked.connect(self.stop)
+        self.gui.form.stop.setDisabled(not self.web.running)
+
+        # Password
+        self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.gui.form.password.textChanged[str].connect(self._password_changed)
+        # Login
+        completer = QtWidgets.QCompleter(self.cfg["logins"])
+        self.gui.form.login.setCompleter(completer)
+        self.gui.form.login.textChanged[str].connect(self._login_changed)
+        self.gui.form.login.setText(self.cfg["last_login"])
+        # Address
+        completer = QtWidgets.QCompleter(self.cfg["address"])
+        self.gui.form.adress.setCompleter(completer)
+        self.gui.form.adress.textChanged[str].connect(self._address_changed)
+        self.gui.form.adress.setText(self.cfg["last_address"])
+
+        self.gui.statusBar()
+        sys.exit(app.exec_())
+
+    def _login_changed(self, s):
+        self.gui.form.start.setDisabled(not self._fields_valid())
+
+    def _address_changed(self, s):
+        self.gui.form.start.setDisabled(not self._fields_valid())
+
+    def _password_changed(self, s):
+        self.gui.form.start.setDisabled(not self._fields_valid())
+
     def on_web_process(self, line):
         self.gui.form.stop.setDisabled(not self.web.running)
+        self.gui.form.start.setDisabled(self.web.running)
         self.gui.statusBar().showMessage(line)
 
     def start(self):
@@ -149,6 +189,9 @@ class Main:
 
     def stop(self):
         self.web.web_process_stop()
+        self.gui.form.stop.setDisabled(not self.web.running)
+        self.gui.form.start.setDisabled(self.web.running)
+
 
     def closeEvent(self, event):
         event.ignore()

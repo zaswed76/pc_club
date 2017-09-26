@@ -1,12 +1,10 @@
 
 import json
 
-class Config:
-    def __init__(self, cfg_path):
+
+def save(self, date):
         pass
 
-    def save(self, date):
-        pass
-
-    def load(self):
-        pass
+def load(path):
+    with open(path, "r") as f:
+        return json.load(f)

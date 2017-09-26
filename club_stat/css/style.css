@@ -1,10 +1,16 @@
 
 QLineEdit {
     border: 1px solid #ababab;
+    font-family: Helvetica;
+    font-size: 12pt;
+    color: #383838;
 }
 
 QTimeEdit {
     border: 1px solid #ababab;
+    font-family: Helvetica;
+    font-size: 12pt;
+    color: #383838;
 }
 
 /*View {*/
