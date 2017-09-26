@@ -25,15 +25,24 @@ QtCore.qInstallMessageHandler(qt_message_handler)
 
 class Worker(QObject):
     finished = pyqtSignal()
-    intReady = pyqtSignal(int)
+    intReady = pyqtSignal(str)
+
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+        self.running = False
 
 
 
     @pyqtSlot()
-    def procCounter(self): # A slot takes no params
-        for i in range(1, 100):
+    def procCounter(self):
+        self.running = True
+        i = 0
+        while self.running:
             time.sleep(1)
-            self.intReady.emit(i)
+            print(self.parent)
+            self.intReady.emit(str(i))
+            i += 1
 
         self.finished.emit()
 
@@ -48,23 +57,28 @@ class Widget(QtWidgets.QWidget):
         self.btn.move(50, 50)
         self.btn.clicked.connect(self.finish)
 
+        self.btn = QtWidgets.QPushButton("s", self)
+        self.btn.move(150, 50)
+        self.btn.clicked.connect(self.start)
 
-        self.obj = Worker()  # no parent!
+        self.obj = Worker(self)  # no parent!
         self.thread = QThread()  # no parent!
 
         self.obj.intReady.connect(self.onIntReady)
         self.obj.moveToThread(self.thread)
         self.obj.finished.connect(self.thread.quit)
         self.thread.started.connect(self.obj.procCounter)
-        self.thread.start()
+
 
     def onIntReady(self, i):
         self.label.setText(str(i))
 
     def finish(self):
         print("f")
-        self.thread.quit()
-        # self.thread.wait()
+        self.obj.running = False
+
+    def start(self):
+        self.thread.start()
 
 
 if __name__ == '__main__':

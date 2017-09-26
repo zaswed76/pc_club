@@ -6,6 +6,7 @@ import time, datetime
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
 import time
+import selenium
 from club_stat import webdriver, config, club
 from club_stat.sql import sql_keeper
 
@@ -36,51 +37,20 @@ def qt_message_handler(mode, context, message):
 
 QtCore.qInstallMessageHandler(qt_message_handler)
 
-class Worker(QObject):
+class Web(QObject):
     finished = pyqtSignal()
-    intReady = pyqtSignal(int)
+    str_web_process = pyqtSignal(str)
 
-
-    @pyqtSlot()
-    def procCounter(self): # A slot takes no params
-        for i in range(1, 100):
-            time.sleep(1)
-            self.intReady.emit(i)
-
-        self.finished.emit()
-
-class Main:
-    def __init__(self):
-        QtCore.qDebug('something informative')
-        app = QtWidgets.QApplication(sys.argv)
-        app.setStyleSheet(open(CSS_STYLE, "r").read())
-        self.gui = ItStat(ICON_DIR)
-        self.gui.closeEvent = self.closeEvent
-        self.gui.show()
-        self.gui.set_tray_icon()
-        self.gui.set_menu()
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+        self.running = False
         self.clubs = club.Clubs()
         self.clubs["les"] = club.Club(club.Club.LES, club.Statistics())
-        self.gui.form.start.clicked.connect(self.start)
-        self.gui.form.stop.clicked.connect(self.stop)
-        self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.gui.statusBar()
-        sys.exit(app.exec_())
 
-    def init_thread(self):
-        self.obj = Worker()  # no parent!
-        self.thread = QThread()  # no parent!
+    # def __getattr__(self, attr):
+    #     print("Yep, I know", attr)
 
-        self.obj.intReady.connect(self.onIntReady)
-        self.obj.moveToThread(self.thread)
-        self.obj.finished.connect(self.thread.quit)
-        self.thread.started.connect(self.obj.procCounter)
-
-
-
-
-    def write_data(self):
-        self.keeper.write()
 
     def read_data(self):
         stat = collections.OrderedDict()
@@ -88,13 +58,13 @@ class Main:
                      "resident", "admin", "workers", "school"]
 
 
-        self.web.select_club("4")
+        self.diver.select_club("4")
         time.sleep(1)
         date_time = datetime.datetime.now()
         date = date_time.date()
         try:
             for opt in stat_names:
-                stat[opt] = self.web.get_data(opt)
+                stat[opt] = self.diver.get_data(opt)
         except Exception as er:
             print(er)
             raise Exception(er)
@@ -106,37 +76,79 @@ class Main:
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
+    def web_process_stop(self):
+        self.running = False
+        self.diver.close()
 
-
-    def start(self):
-        adr = self.gui.form.adress.text()
+    @pyqtSlot()
+    def web_process_start(self):
         login_id = 'enter_login'
         password_id = 'enter_password'
         submit_name = 'but_m'
-        login = self.gui.form.login.text()
-        password = self.gui.form.password.text()
-        self.web = webdriver.WebDriver(adr, webdriver.WebDriver.Chrome)
-        self.gui.statusBar().showMessage('открыл браузер')
-        self.web.log_in(login_id, password_id, submit_name,
-                        login, password)
-        self.gui.statusBar().showMessage('залогинился')
 
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.read_data)
-        self.timer.start(1000 * 60)
-        self.keeper = sql_keeper.Keeper(DATA_FILE)
-        self.keeper.open_connect()
-        self.keeper.open_cursor()
-        self.keeper.create_table(sql_keeper.table())
+        adr = self.parent.gui.form.adress.text()
+        login = self.parent.gui.form.login.text()
+        password = self.parent.gui.form.password.text()
 
+        try:
+            self.diver = webdriver.WebDriver(adr, webdriver.WebDriver.Chrome)
+        except selenium.common.exceptions.WebDriverException:
+            self.str_web_process.emit("не удалось запустить страницу")
+            self.running = False
+        else:
+            self.str_web_process.emit("запустился драйвер")
+            self.diver.log_in(login_id, password_id, submit_name,
+                            login, password)
+            self.str_web_process.emit("залогинился")
 
+            self.keeper = sql_keeper.Keeper(DATA_FILE)
+            self.keeper.open_connect()
+            self.keeper.open_cursor()
+            self.keeper.create_table(sql_keeper.table())
+            self.running = True
+
+        # while self.running:
+        #     self.read_data()
+
+        # self.finished.emit()
+
+class Main:
+    def __init__(self):
+        QtCore.qDebug('something informative')
+        app = QtWidgets.QApplication(sys.argv)
+        app.setStyleSheet(open(CSS_STYLE, "r").read())
+        self.init_thread()
+        self.gui = ItStat(ICON_DIR)
+        self.gui.closeEvent = self.closeEvent
+        self.gui.show()
+        self.gui.set_tray_icon()
+        self.gui.set_menu()
+
+        self.gui.form.start.clicked.connect(self.start)
+        self.gui.form.stop.clicked.connect(self.stop)
+        self.gui.form.stop.setDisabled(not self.web.running)
+        self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.gui.statusBar()
+
+        sys.exit(app.exec_())
+
+    def init_thread(self):
+        self.web = Web(self)
+        self.thread = QThread()
+        self.web.str_web_process.connect(self.on_web_process)
+        self.web.moveToThread(self.thread)
+        self.web.finished.connect(self.thread.quit)
+        self.thread.started.connect(self.web.web_process_start)
+
+    def on_web_process(self, line):
+        self.gui.form.stop.setDisabled(not self.web.running)
+        self.gui.statusBar().showMessage(line)
+
+    def start(self):
+        self.thread.start()
 
     def stop(self):
-        try:
-            self.timer.stop()
-            self.keeper.close()
-        except AttributeError as er:
-            print(er)
+        self.web.web_process_stop()
 
     def closeEvent(self, event):
         event.ignore()
