@@ -41,7 +41,7 @@ QtCore.qInstallMessageHandler(qt_message_handler)
 
 class Web(QObject):
     finished = pyqtSignal()
-    str_web_process = pyqtSignal(str)
+    str_web_process = pyqtSignal(str, str)
 
     def __init__(self, parent):
         super().__init__()
@@ -68,7 +68,7 @@ class Web(QObject):
         seq = [date, date_time, self.clubs["les"].field_name]
         seq.extend(stat.values())
         seq = tuple(seq)
-        self.str_web_process.emit("{} - {} - {}".format(seq[1], seq[2], seq[4]))
+        self.str_web_process.emit("{} - {} - {}".format(seq[1], seq[2], seq[4]), "none")
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
@@ -92,15 +92,15 @@ class Web(QObject):
             self.str_web_process.emit("не удалось запустить страницу")
             self.running = False
         else:
-            self.str_web_process.emit("запустился драйвер")
+            self.str_web_process.emit("запустился драйвер", "none")
             self.diver.log_in(login_id, password_id, submit_name,
                             login, password)
-            self.str_web_process.emit("залогинился")
+            self.str_web_process.emit("залогинился", "log_in")
             self.keeper = sql_keeper.Keeper(DATA_FILE)
             self.keeper.open_connect()
             self.keeper.open_cursor()
             self.keeper.create_table(sql_keeper.table())
-            self.str_web_process.emit("открыта база данных")
+            self.str_web_process.emit("открыта база данных", "none")
             self.running = True
 
         while self.running:
@@ -110,8 +110,10 @@ class Web(QObject):
         self.finished.emit()
 
 class Main:
+
     def __init__(self):
         QtCore.qDebug('something informative')
+        self.web_code = dict(log_in=self.save_login)
 
         self.cfg = config.load(CONFIG_PATH)
 
@@ -179,10 +181,16 @@ class Main:
     def _password_changed(self, s):
         self.gui.form.start.setDisabled(not self._fields_valid())
 
-    def on_web_process(self, line):
+    def on_web_process(self, line, code):
         self.gui.form.stop.setDisabled(not self.web.running)
         self.gui.form.start.setDisabled(self.web.running)
         self.gui.statusBar().showMessage(line)
+        self.web_code.get(code, lambda: None)()
+
+    def save_login(self):
+        self.cfg["logins"].append(self.gui.form.login.text())
+        config.save(CONFIG_PATH, self.cfg)
+
 
     def start(self):
         self.thread.start()
