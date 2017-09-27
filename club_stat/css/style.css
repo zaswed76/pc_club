@@ -1,4 +1,13 @@
 
+QStatusBar {
+
+    font-family: Helvetica;
+    font-size: 8pt;
+    color: #037717;
+}
+
+
+
 QLineEdit {
     border: 1px solid #ababab;
     font-family: Helvetica;

@@ -148,7 +148,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QTimeEdit" name="timeEdit">
+      <widget class="QTimeEdit" name="time_edit">
        <property name="minimumSize">
         <size>
          <width>0</width>

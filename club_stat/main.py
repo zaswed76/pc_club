@@ -10,6 +10,10 @@ import selenium
 from club_stat import webdriver, config, club
 from club_stat.sql import sql_keeper
 
+
+
+
+
 from club_stat.gui.itstat import ItStat
 
 adr = "http://adminold.itland.enes.tech/index.php/map"
@@ -47,10 +51,12 @@ class Web(QObject):
         super().__init__()
         self.parent = parent
         self.running = False
+        self.browser_pos_flag = False
         self.clubs = club.Clubs()
         self.clubs["les"] = club.Club(club.Club.LES, club.Statistics())
 
     def read_data(self):
+        time.sleep(1)
         stat = collections.OrderedDict()
         stat_names = ["load", "taken", "free", "guest",
                      "resident", "admin", "workers", "school"]
@@ -68,7 +74,7 @@ class Web(QObject):
         seq = [date, date_time, self.clubs["les"].field_name]
         seq.extend(stat.values())
         seq = tuple(seq)
-        self.str_web_process.emit("{} - {} - {}".format(seq[1], seq[2], seq[4]), "none")
+        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[4]), "none")
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
@@ -78,6 +84,7 @@ class Web(QObject):
 
     @pyqtSlot()
     def web_process_start(self):
+
         login_id = 'enter_login'
         password_id = 'enter_password'
         submit_name = 'but_m'
@@ -92,10 +99,14 @@ class Web(QObject):
             self.str_web_process.emit("не удалось запустить страницу")
             self.running = False
         else:
+
+
             self.str_web_process.emit("запустился драйвер", "none")
             self.diver.log_in(login_id, password_id, submit_name,
                             login, password)
             self.str_web_process.emit("залогинился", "log_in")
+            time.sleep(2)
+
             self.keeper = sql_keeper.Keeper(DATA_FILE)
             self.keeper.open_connect()
             self.keeper.open_cursor()
@@ -105,6 +116,10 @@ class Web(QObject):
 
         while self.running:
             self.read_data()
+            if not self.browser_pos_flag:
+
+                self.diver.browser.set_window_position(-10000, 0)
+            self.browser_pos_flag = True
             time.sleep(5)
 
         self.finished.emit()
@@ -155,6 +170,8 @@ class Main:
         self.gui.form.stop.clicked.connect(self.stop)
         self.gui.form.stop.setDisabled(not self.web.running)
 
+        # self.gui.form.time_edit.setTime()
+
         # Password
         self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.gui.form.password.textChanged[str].connect(self._password_changed)
@@ -172,6 +189,7 @@ class Main:
         self.gui.statusBar()
         sys.exit(app.exec_())
 
+
     def _login_changed(self, s):
         self.gui.form.start.setDisabled(not self._fields_valid())
 
@@ -188,9 +206,16 @@ class Main:
         self.web_code.get(code, lambda: None)()
 
     def save_login(self):
-        self.cfg["logins"].append(self.gui.form.login.text())
+        lg = self.gui.form.login.text()
+        if lg not in self.cfg["logins"]:
+            self.cfg["logins"].append(lg)
+        self.cfg["last_login"] = lg
+        adr = self.gui.form.adress.text()
+        if adr not in self.cfg["address"]:
+            self.cfg["address"].append(adr)
+        self.cfg["last_address"] = adr
         config.save(CONFIG_PATH, self.cfg)
-
+        print(self.gui.form.time_edit.time())
 
     def start(self):
         self.thread.start()
@@ -202,6 +227,7 @@ class Main:
 
 
     def closeEvent(self, event):
+
         event.ignore()
         self.gui.hide()
         self.gui.tray_icon.showMessage(

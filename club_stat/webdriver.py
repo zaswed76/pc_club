@@ -12,6 +12,8 @@ class WebDriver:
     def __init__(self, adr, browser):
         self.browser = browser()
         self.browser.get(adr)
+        self.browser.maximize_window()
+
 
     def log_in(self, login_id, password_id, submit_name,
                         login, password):
@@ -34,5 +36,5 @@ class WebDriver:
         return self.browser.find_element_by_id(field).text
 
     def close(self):
-        self.browser.close()
+        self.browser.quit()
 
