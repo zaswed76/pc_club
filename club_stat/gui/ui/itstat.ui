@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>296</height>
+    <width>550</width>
+    <height>389</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,6 +23,12 @@
    <string notr="true">background-color: rgb(216, 216, 216);</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
@@ -43,6 +49,9 @@
          </property>
          <property name="text">
           <string>адрес</string>
+         </property>
+         <property name="margin">
+          <number>6</number>
          </property>
         </widget>
        </item>
@@ -245,6 +254,41 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(206, 206, 206);</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="export_to_xlsx">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>12</y>
+        <width>34</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">

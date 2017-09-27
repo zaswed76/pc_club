@@ -1,3 +1,4 @@
+import http
 import os
 import sys
 
@@ -52,15 +53,31 @@ class Web(QObject):
         self.parent = parent
         self.running = False
         self.browser_pos_flag = False
+        self._change_time = (0, 0, 0)
         self.clubs = club.Clubs()
         self.clubs["les"] = club.Club(club.Club.LES, club.Statistics())
+
+
+    @property
+    def change_time(self):
+        return self._change_time
+
+    @change_time.setter
+    def change_time(self, qt):
+        if isinstance(qt, QtCore.QTime):
+            self._change_time = (qt.hour(), qt.minute(), qt.second())
 
     def read_data(self):
         time.sleep(1)
         stat = collections.OrderedDict()
         stat_names = ["load", "taken", "free", "guest",
                      "resident", "admin", "workers", "school"]
-        self.diver.select_club("4")
+
+        try:
+            time.sleep(1)
+            self.diver.select_club("4")
+        except http.client.CannotSendRequest:
+            print("aaa")
         time.sleep(1)
         date_time = datetime.datetime.now()
         date = date_time.date()
@@ -99,8 +116,6 @@ class Web(QObject):
             self.str_web_process.emit("не удалось запустить страницу")
             self.running = False
         else:
-
-
             self.str_web_process.emit("запустился драйвер", "none")
             self.diver.log_in(login_id, password_id, submit_name,
                             login, password)
@@ -115,14 +130,19 @@ class Web(QObject):
             self.running = True
 
         while self.running:
-            self.read_data()
+            try:
+                self.read_data()
+            except Exception as er:
+                print(er)
             if not self.browser_pos_flag:
 
                 self.diver.browser.set_window_position(-10000, 0)
             self.browser_pos_flag = True
-            time.sleep(5)
+            h, m, s = self.change_time
+            time.sleep(((h * 3600) + (m*60) + s) - 4)
 
         self.finished.emit()
+        self.browser_pos_flag = False
 
 class Main:
 
@@ -131,9 +151,6 @@ class Main:
         self.web_code = dict(log_in=self.save_login)
 
         self.cfg = config.load(CONFIG_PATH)
-
-        print(self.cfg)
-
         self._init_thread()
         self._init_gui()
 
@@ -158,6 +175,7 @@ class Main:
         self.gui = ItStat(ICON_DIR)
         self.gui.closeEvent = self.closeEvent
         self.gui.show()
+        self.gui.resize(500, 350)
         self.gui.set_tray_icon()
         self.gui.set_menu()
 
@@ -170,11 +188,12 @@ class Main:
         self.gui.form.stop.clicked.connect(self.stop)
         self.gui.form.stop.setDisabled(not self.web.running)
 
-        # self.gui.form.time_edit.setTime()
+
 
         # Password
         self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.gui.form.password.textChanged[str].connect(self._password_changed)
+        self.gui.form.password.setPlaceholderText("Пароль")
         # Login
         completer = QtWidgets.QCompleter(self.cfg["logins"])
         self.gui.form.login.setCompleter(completer)
@@ -185,6 +204,10 @@ class Main:
         self.gui.form.adress.setCompleter(completer)
         self.gui.form.adress.textChanged[str].connect(self._address_changed)
         self.gui.form.adress.setText(self.cfg["last_address"])
+        # TimeChange
+        self.gui.form.time_edit.setDisplayFormat("HH:mm:ss")
+        self.gui.form.time_edit.setMinimumTime(QtCore.QTime(0, 0, 10))
+        self.gui.form.time_edit.setTime(QtCore.QTime(*self.cfg["time_change"]))
 
         self.gui.statusBar()
         sys.exit(app.exec_())
@@ -214,10 +237,13 @@ class Main:
         if adr not in self.cfg["address"]:
             self.cfg["address"].append(adr)
         self.cfg["last_address"] = adr
+        qt = self.gui.form.time_edit.time()
+        self.cfg["time_change"] = [qt.hour(), qt.minute(), qt.second()]
         config.save(CONFIG_PATH, self.cfg)
-        print(self.gui.form.time_edit.time())
+
 
     def start(self):
+        self.web.change_time = self.gui.form.time_edit.time()
         self.thread.start()
 
     def stop(self):

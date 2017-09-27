@@ -1,6 +1,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+import http
 
 enter_login = 'enter_login'
 enter_password = 'enter_password'

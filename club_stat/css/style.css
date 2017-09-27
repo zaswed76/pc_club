@@ -11,15 +11,26 @@ QStatusBar {
 QLineEdit {
     border: 1px solid #ababab;
     font-family: Helvetica;
-    font-size: 12pt;
+    font-size: 11pt;
     color: #383838;
 }
 
 QTimeEdit {
     border: 1px solid #ababab;
     font-family: Helvetica;
-    font-size: 12pt;
+    font-size: 11pt;
     color: #383838;
+}
+
+
+
+QPushButton#export_to_xlsx {
+    image: url(./resource/icons/export_to_xlsx.png);
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+
 }
 
 /*View {*/
