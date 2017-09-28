@@ -16,13 +16,14 @@ def table():
     resident INTEGER,
     admin INTEGER,
     workers INTEGER,
-    school INTEGER
+    school INTEGER,
+    visitor INTEGER
     );
 """
     return table
 
 def ins_club_stat():
-    return 'insert into club values (?,?,?,?,?,?,?,?,?,?,?)'
+    return 'insert into club values (?,?,?,?,?,?,?,?,?,?,?,?)'
 
 def seq_line():
     d = datetime.datetime.now().date()
@@ -150,29 +151,31 @@ class Keeper():
 if __name__ == '__main__':
     # region открыть базу
     # path = "data.db"
-    path = r"D:\Serg\project\pc_club\club_stat\data\data.db"
+    path = r"D:\0SYNC\python_projects\pc_club\club_stat\data\data.db"
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
+    kp.seq_print(kp.samp_date("28.09.2017"))
     # Keeper.seq_print(kp.sample_all())
     # region Description
-    r = kp.sample_hour("24.09.2017 09:00:00", "25.09.2017 09:00:00")
+    # r = kp.sample_hour("28.09.2017 09:00:00", "28.09.2017 23:00:00")
+    # print(r)
 
-    lst = []
-    for line in r:
-        ln = list(line)
-        st = ln[0]
-        t = datetime.datetime.strptime(st, "%Y-%m-%d %H:%M:%S.%f").time()
-        new_t = t.strftime("%H")
-        ln[0] = new_t
-        lst.append(ln)
-
-    import pandas as pd
-    df = pd.DataFrame(lst)
-
-    writer = pd.ExcelWriter('output.xlsx')
-    df.to_excel(writer,'Sheet1')
-    writer.save()
+    # lst = []
+    # for line in r:
+    #     ln = list(line)
+    #     st = ln[0]
+    #     t = datetime.datetime.strptime(st, "%Y-%m-%d %H:%M:%S.%f").time()
+    #     new_t = t.strftime("%H")
+    #     ln[0] = new_t
+    #     lst.append(ln)
+    #
+    # import pandas as pd
+    # df = pd.DataFrame(lst)
+    #
+    # writer = pd.ExcelWriter('output2.xlsx')
+    # df.to_excel(writer,'Sheet1')
+    # writer.save()
     # endregion
     # endregion
 

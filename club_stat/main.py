@@ -84,14 +84,19 @@ class Web(QObject):
         try:
             for opt in stat_names:
                 stat[opt] = self.diver.get_data(opt)
+            print(type(stat["guest"]))
+            stat["visitor"] = sum([int(x) for x in (stat["guest"], stat["resident"], stat["school"])])
+            print(stat["visitor"])
         except Exception as er:
             print(er)
             raise Exception(er)
 
         seq = [date, date_time, self.clubs["les"].field_name]
         seq.extend(stat.values())
+
         seq = tuple(seq)
-        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[4]), "none")
+        print(seq, len(seq))
+        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[11]), "none")
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
