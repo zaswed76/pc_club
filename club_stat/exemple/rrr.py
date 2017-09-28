@@ -15,7 +15,7 @@ x_labels.extend(x_labels1)
 
 # now to plot the figure...
 # plt.figure(figsize=(10, 5))
-ax = freq_series.plot(kind='bar')
+ax = freq_series.plot(kind='bar', width = 0.8)
 ax.set_title("")
 ax.set_xlabel("время")
 ax.set_ylabel("Человек")
@@ -28,7 +28,7 @@ labels = [i for i in frequencies]
 
 for rect, label in zip(rects, labels):
     height = rect.get_height()
-    ax.text(rect.get_x() + rect.get_width()/2, height + 0.3, label, ha='center', va='bottom')
+    ax.text(rect.get_x() + rect.get_width()/2, height + 0.4, label, ha='center', va='bottom')
 
-# plt.show()
-plt.savefig("image.png")
+plt.show()
+# plt.savefig("image.png")
