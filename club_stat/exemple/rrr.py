@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 frequencies = [6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3, 7, 8,
-               6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3]   # bring some raw data
+               6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3]
 
 freq_series = pd.Series.from_array(frequencies)   # in my original code I create a series and run on that, so for consistency I create a series from the list.
 
