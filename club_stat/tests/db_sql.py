@@ -36,7 +36,11 @@ def add_note(kp, table):
         else:
             d = date_end
             dt = str_to_datetime(date_end, h)
-        seq = (d, dt, "les", 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        h = dt.time().hour
+        m = dt.time().minute
+        seq = (d, dt, h, m, "les", 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+
         kp.add_line(skp.ins_club_stat(), seq)
     kp.close()
 
@@ -48,14 +52,21 @@ def add_note(kp, table):
 
 
 if __name__ == '__main__':
-    # kp = skp.Keeper(test_db_1)
-    # kp.open_connect()
-    # kp.open_cursor()
-    # add_note(kp, skp.table())
-
-    # create_table(test_db_1, skp.table())
-
-    kp = skp.Keeper(test_db_1)
+    kp = skp.Keeper(pth.DATA_FILE_2)
     kp.open_connect()
     kp.open_cursor()
     kp.seq_print(kp.sample_all())
+    print(pth.DATA_FILE_2)
+    # add_note(kp, skp.table())
+
+    # create_table(test_db_1, skp.table())
+    # import sqlite3
+    # connect = sqlite3.connect(test_db_1)
+    # cursor = connect.cursor()
+    # sl = "SELECT * FROM club WHERE dt = ?"
+    # d1 = datetime.strptime('29.09.2017', "%d.%m.%Y").date()
+    # d2 = datetime.strptime('30.09.2017', "%d.%m.%Y").date()
+    # d = datetime.strptime('30.10.2017', "%d.%m.%Y").date()
+    # print(d)
+    # cursor.execute(sl, (d,))
+    # print(cursor.fetchall())

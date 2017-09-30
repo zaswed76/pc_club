@@ -10,7 +10,7 @@ import time
 import selenium
 from club_stat import webdriver, config, club
 from club_stat.sql import sql_keeper
-
+from club_stat import pth
 
 
 
@@ -22,7 +22,7 @@ adr = "http://adminold.itland.enes.tech/index.php/map"
 ROOT = os.path.join(os.path.dirname(__file__))
 CSS_STYLE = os.path.join(ROOT, "css/style.css")
 DATA_DIR = os.path.join(ROOT, "data")
-DATA_FILE = os.path.join(DATA_DIR, "data.db")
+DATA_FILE = os.path.join(DATA_DIR, "data_2.db")
 ICON_DIR = os.path.join(ROOT, "resource/icons")
 ETC = os.path.join(ROOT, "etc")
 CONFIG_PATH = os.path.join(ETC, "default.json")
@@ -76,27 +76,28 @@ class Web(QObject):
         try:
             time.sleep(1)
             self.diver.select_club("4")
-        except http.client.CannotSendRequest:
-            print("aaa")
+        except http.client.CannotSendRequest as er:
+            print(er, "main line 80")
         time.sleep(1)
         date_time = datetime.datetime.now()
         date = date_time.date()
+        h = date_time.time().hour
+        minute = date_time.time().minute
         try:
             for opt in stat_names:
                 stat[opt] = self.diver.get_data(opt)
-            print(type(stat["guest"]))
+
             stat["visitor"] = sum([int(x) for x in (stat["guest"], stat["resident"], stat["school"])])
-            print(stat["visitor"])
+
         except Exception as er:
-            print(er)
+
             raise Exception(er)
 
-        seq = [date, date_time, self.clubs["les"].field_name]
+        seq = [date, date_time, h, minute, self.clubs["les"].field_name]
         seq.extend(stat.values())
 
         seq = tuple(seq)
-        print(seq, len(seq))
-        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[11]), "none")
+        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[12]), "none")
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
@@ -127,7 +128,7 @@ class Web(QObject):
             self.str_web_process.emit("залогинился", "log_in")
             time.sleep(2)
 
-            self.keeper = sql_keeper.Keeper(DATA_FILE)
+            self.keeper = sql_keeper.Keeper(pth.DATA_FILE_2)
             self.keeper.open_connect()
             self.keeper.open_cursor()
             self.keeper.create_table(sql_keeper.table())

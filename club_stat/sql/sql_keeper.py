@@ -6,8 +6,10 @@ def table():
     table = """\
     CREATE TABLE club
     (
-    dt date,
-    data_time timestam,
+    dt DATA,
+    data_time TIMESTAMP,
+    mhour HOUR,
+    mminute MINUTE,
     club TEXT,
     load INTEGER,
     taken INTEGER,
@@ -23,7 +25,7 @@ def table():
     return table
 
 def ins_club_stat():
-    return 'insert into club values (?,?,?,?,?,?,?,?,?,?,?,?)'
+    return 'insert into club values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
 
 def seq_line():
     d = datetime.datetime.now().date()
@@ -151,11 +153,11 @@ class Keeper():
 if __name__ == '__main__':
     # region открыть базу
     # path = "data.db"
-    path = r"D:\0SYNC\python_projects\pc_club\club_stat\data\data.db"
+    path = r"D:\Serg\project\pc_club\club_stat\tests\data\db__test_time.db"
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
-    kp.seq_print(kp.samp_date("28.09.2017"))
+    kp.seq_print(kp.samp_date("29.09.2017"))
     # Keeper.seq_print(kp.sample_all())
     # region Description
     # r = kp.sample_hour("28.09.2017 09:00:00", "28.09.2017 23:00:00")
