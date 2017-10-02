@@ -38,10 +38,11 @@ class OutApp(QtWidgets.QWidget):
 
     def update_graph(self):
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
+        dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
         keep = sql_keeper.Keeper(self.db_path)
         keep.open_connect()
         keep.open_cursor()
-        res = keep.sample_range_date(dt_start, dt_start)
+        res = keep.sample_range_date(dt_start, dt_end)
         for i in res:
             print(i)
 

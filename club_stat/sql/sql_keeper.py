@@ -1,4 +1,5 @@
 import datetime
+import itertools
 
 import sqlite3
 
@@ -125,9 +126,17 @@ class Keeper():
         :param date_end: datetime.datetime
         """
         start_date = date_start.date()
-        z = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9 OR mhour = 0 "
-        self.cursor.execute(z, (start_date,))
-        r = self.cursor.fetchall()
+        end_date = date_end.date()
+        z1 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9 OR mhour = 0 "
+        self.cursor.execute(z1, (start_date,))
+        r1 = self.cursor.fetchall()
+
+        z2 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour > 0 AND mhour <= 9 "
+        self.cursor.execute(z2, (end_date,))
+        r2 = self.cursor.fetchall()
+        r = itertools.chain(r1, r2)
+        print(r2)
+        print("-------------------")
         return sort_seq(r)
 
     def sample_all(self):
