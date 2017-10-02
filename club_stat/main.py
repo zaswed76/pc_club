@@ -97,7 +97,7 @@ class Web(QObject):
         seq.extend(stat.values())
 
         seq = tuple(seq)
-        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[12]), "none")
+        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[13]), "none")
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
@@ -194,6 +194,10 @@ class Main:
         self.gui.form.stop.clicked.connect(self.stop)
         self.gui.form.stop.setDisabled(not self.web.running)
 
+        # Export btn
+
+        self.gui.form.export_to_xlsx.clicked.connect(self.export_to_xlsx)
+
 
 
         # Password
@@ -214,6 +218,8 @@ class Main:
         self.gui.form.time_edit.setDisplayFormat("HH:mm:ss")
         self.gui.form.time_edit.setMinimumTime(QtCore.QTime(0, 0, 10))
         self.gui.form.time_edit.setTime(QtCore.QTime(*self.cfg["time_change"]))
+
+
 
         self.gui.statusBar()
         sys.exit(app.exec_())
@@ -257,6 +263,9 @@ class Main:
         self.gui.form.stop.setDisabled(not self.web.running)
         self.gui.form.start.setDisabled(self.web.running)
 
+
+    def export_to_xlsx(self):
+        print("export_to_xlsx")
 
     def closeEvent(self, event):
 
