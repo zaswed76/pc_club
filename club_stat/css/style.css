@@ -22,6 +22,12 @@ QTimeEdit {
     color: #383838;
 }
 
+QDateTimeEdit {
+    border: 1px solid #ababab;
+    font-family: Helvetica;
+    font-size: 11pt;
+    color: #383838;
+}
 
 
 QPushButton#export_to_xlsx {
@@ -31,7 +37,19 @@ QPushButton#export_to_xlsx {
     border-bottom: none;
     border-left: none;
 
+
 }
+
+QPushButton#update_graph {
+    image: url(./resource/icons/update_graph.png);
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+
+}
+
+
 
 /*View {*/
     /*border: none;*/

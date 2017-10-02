@@ -26,7 +26,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QDateTimeEdit" name="dt_start_edit"/>
+        <widget class="QDateTimeEdit" name="dt_start_edit">
+         <property name="displayFormat">
+          <string>dd.MM.yyyy      H:mm</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -40,7 +44,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QDateTimeEdit" name="dt_end_edit"/>
+        <widget class="QDateTimeEdit" name="dt_end_edit">
+         <property name="displayFormat">
+          <string>dd.MM.yyyy      H:mm</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -82,17 +90,28 @@
     </layout>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="update_graph">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QGraphicsView" name="graphicsView"/>

@@ -16,6 +16,7 @@ from club_stat import pth
 
 
 from club_stat.gui.itstat import ItStat
+from club_stat.gui.out_app import OutApp
 
 adr = "http://adminold.itland.enes.tech/index.php/map"
 
@@ -265,7 +266,8 @@ class Main:
 
 
     def export_to_xlsx(self):
-        print("export_to_xlsx")
+        out_app = OutApp()
+        out_app.show()
 
     def closeEvent(self, event):
 
