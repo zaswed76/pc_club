@@ -266,7 +266,7 @@ class Main:
 
 
     def export_to_xlsx(self):
-        out_app = OutApp()
+        out_app = OutApp(pth.DATA_FILE_2)
         out_app.show()
 
     def closeEvent(self, event):

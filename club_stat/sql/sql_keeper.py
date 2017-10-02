@@ -101,10 +101,17 @@ class Keeper():
 
         return datetime.datetime.strptime(line, "%d.%m.%Y %H:%M:%S")
 
-    def sample_range_date(self, date_start, time_start, date_end):
-        st = datetime.strptime("29.09.2017", "%d.%m.%Y").date()
-        end = datetime.strptime("30.09.2017", "%d.%m.%Y").date()
-        z = "SELECT * FROM club WHERE dt = ? AND mminute = 0 AND mhour >= 9 OR mhour = 0 "
+    def sample_range_date(self, date_start , date_end):
+
+        """
+
+        :param date_start : datetime.datetime
+        :param date_end: datetime.datetime
+        """
+        start_date = date_start.date()
+        z = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9 OR mhour = 0 "
+        self.cursor.execute(z, (start_date,))
+        return self.cursor.fetchall()
 
     def sample_all(self):
         self.cursor.execute("SELECT * FROM club")
