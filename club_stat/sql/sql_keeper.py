@@ -53,6 +53,22 @@ def dates():
         lst.append(datetime.datetime.strptime(strdate, "%d.%m.%Y").date())
     return lst
 
+class Akm(list):
+    def __init__(self):
+        super().__init__()
+
+    def __contains__(self, item):
+        for line in self:
+            if item[0] == line[2] and item[1] == line[3]:
+                return True
+
+
+def sort_seq(lst):
+    akm = Akm()
+    for line in lst:
+        if not (line[2], line[3]) in akm:
+            akm.append(line)
+    return akm
 
 class Keeper():
     def __init__(self, path):
@@ -111,7 +127,8 @@ class Keeper():
         start_date = date_start.date()
         z = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9 OR mhour = 0 "
         self.cursor.execute(z, (start_date,))
-        return self.cursor.fetchall()
+        r = self.cursor.fetchall()
+        return sort_seq(r)
 
     def sample_all(self):
         self.cursor.execute("SELECT * FROM club")
