@@ -80,12 +80,13 @@ if __name__ == '__main__':
 # <editor-fold desc="Select">
     st = datetime.strptime("29.09.2017", "%d.%m.%Y").date()
     end = datetime.strptime("30.09.2017", "%d.%m.%Y").date()
-    kp.cursor.execute("SELECT data_time FROM club WHERE dt = ? AND mhour >= 9 OR mhour = 0", (st,))
+    z = "SELECT * FROM club WHERE dt = ? AND mminute = 0 AND mhour >= 9 OR mhour = 0 "
+    kp.cursor.execute(z, (st,))
     kp.seq_print(kp.cursor.fetchall())
     print("--------------------------")
 
-    kp.cursor.execute("SELECT data_time FROM club WHERE dt = ? AND mhour < 9", (end,))
-    kp.seq_print(kp.cursor.fetchall())
+    kp.cursor.execute("SELECT * FROM club WHERE dt = ? AND mhour < 9", (end,))
+    print(kp.cursor.fetchall())
 # </editor-fold>
 
 
