@@ -2,6 +2,8 @@ lst = [(1, 0, 1), (1, 3, 2), (1, 3, 3), (2, 0, 1), (2, 0, 2),
        (2, 3, 3), (2, 3, 4), (3, 0, 1), (3, 0, 2)]
 
 
+from itertools import chain
+
 class Akm(list):
     def __init__(self):
         super().__init__()
@@ -27,4 +29,9 @@ def sort_seq2(lst):
 
 
 if __name__ == '__main__':
-    print(sort_seq(lst))
+    a = [(1, 2, 3), (5, 6, 7)]
+    b = [(8, 9, 10), (11, 12, 13)]
+    print(list(chain(a, b)))
+
+
+

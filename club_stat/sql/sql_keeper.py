@@ -3,6 +3,9 @@ import itertools
 
 import sqlite3
 
+from club_stat import pth
+
+
 def table():
     table = """\
     CREATE TABLE club
@@ -127,16 +130,14 @@ class Keeper():
         """
         start_date = date_start.date()
         end_date = date_end.date()
-        z1 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9 OR mhour = 0 "
+        z1 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9"
         self.cursor.execute(z1, (start_date,))
         r1 = self.cursor.fetchall()
 
-        z2 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour > 0 AND mhour <= 9 "
+        z2 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 0 AND mhour <= 9 "
         self.cursor.execute(z2, (end_date,))
         r2 = self.cursor.fetchall()
         r = itertools.chain(r1, r2)
-        print(r2)
-        print("-------------------")
         return sort_seq(r)
 
     def sample_all(self):
@@ -180,11 +181,11 @@ class Keeper():
 if __name__ == '__main__':
     # region открыть базу
     # path = "data.db"
-    path = r"D:\Serg\project\pc_club\club_stat\tests\data\db__test_time.db"
+    path = pth.DATA_FILE_2
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
-    kp.seq_print(kp.samp_date("29.09.2017"))
+    kp.seq_print(kp.sample_all())
     # Keeper.seq_print(kp.sample_all())
     # region Description
     # r = kp.sample_hour("28.09.2017 09:00:00", "28.09.2017 23:00:00")
