@@ -1,5 +1,5 @@
 import datetime
-import itertools
+import collections
 
 import sqlite3
 
@@ -28,34 +28,13 @@ def table():
 """
     return table
 
+
 def ins_club_stat():
     return 'insert into club values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
 
-def seq_line():
-    d = datetime.datetime.now().date()
-    dt = datetime.datetime.now()
-    return (d, dt, "les", 1, 1, 1, 1, 1, 1, 1, 1)
 
+#
 
-def seq_line_date(date):
-    d = datetime.datetime.strptime(date, "%d.%m.%Y").date()
-    dt = datetime.datetime.strptime(date, "%d.%m.%Y")
-    return (d, dt, "les", 1, 1, 1, 1, 1, 1, 1, 1)
-
-def seq_line_date_time(date_time):
-    dt = datetime.datetime.strptime(date_time, "%d.%m.%Y %H:%M")
-    d = dt.date()
-    return (d, dt, "les", 1, 1, 1, 1, 1, 1, 1, 1)
-
-
-
-def dates():
-    lst = []
-    d = (1, 2, 3, 4, 5)
-    for i in d:
-        strdate = "{}.09.2017".format(i)
-        lst.append(datetime.datetime.strptime(strdate, "%d.%m.%Y").date())
-    return lst
 
 class Akm(list):
     def __init__(self):
@@ -73,6 +52,24 @@ def sort_seq(lst):
         if not (line[2], line[3]) in akm:
             akm.append(line)
     return akm
+
+
+######################################################################
+class State(collections.Iterator):
+    states_names = (
+    "dt", "data_time", "mhour", "mminute", "club", "load",
+    "taken", "free", "guest", "resident", "admin", "workers",
+    "school", "visitor")
+
+    def __init__(self, stat):
+        self.states = {}
+        for name, s in zip(self.states_names, stat):
+            self.states[name] = s
+
+    def __next__(self):
+        pass
+
+
 
 class Keeper():
     def __init__(self, path):
@@ -109,7 +106,8 @@ class Keeper():
 
     def samp_date(self, date):
         d = datetime.datetime.strptime(date, "%d.%m.%Y").date()
-        self.cursor.execute("SELECT data_time, taken FROM club WHERE dt = ?", (d,))
+        self.cursor.execute(
+            "SELECT data_time, taken FROM club WHERE dt = ?", (d,))
         return self.cursor.fetchall()
 
     @staticmethod
@@ -121,24 +119,31 @@ class Keeper():
 
         return datetime.datetime.strptime(line, "%d.%m.%Y %H:%M:%S")
 
-    def sample_range_date(self, date_start , date_end):
+    def sample_range_date(self, date_start, date_end, step):
 
         """
 
         :param date_start : datetime.datetime
         :param date_end: datetime.datetime
         """
+        request = {}
+        request[
+            "step1"] = "SELECT * FROM club WHERE (dt BETWEEN ? AND ?)  AND mminute = 0"
+        request[
+            "step30"] = "SELECT * FROM club WHERE (dt BETWEEN ? AND ?) AND (mminute = 0 OR mminute = 30)"
+
         start_date = date_start.date()
+        start_time = date_start.time().hour
+
         end_date = date_end.date()
-        z1 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9"
-        self.cursor.execute(z1, (start_date,))
+        end_time = date_end.time().hour
+
+        print(start_date, end_date, start_time, end_time)
+        self.cursor.execute(request[step], (start_date, end_date))
         r1 = self.cursor.fetchall()
 
-        z2 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 0 AND mhour <= 9 "
-        self.cursor.execute(z2, (end_date,))
-        r2 = self.cursor.fetchall()
-        r = itertools.chain(r1, r2)
-        return sort_seq(r)
+        req = [State(x) for x in r1]
+        return req
 
     def sample_all(self):
         self.cursor.execute("SELECT * FROM club")
@@ -157,7 +162,8 @@ class Keeper():
         range_date = self.sample_range_date(start_date, end_date)
 
         for line in range_date:
-            sql_date = datetime.datetime.strptime(line[0], "%Y-%m-%d %H:%M:%S.%f")
+            sql_date = datetime.datetime.strptime(line[0],
+                                                  "%Y-%m-%d %H:%M:%S.%f")
             sql_time = sql_date.time()
             #
             # if (sql_time <
@@ -176,8 +182,6 @@ class Keeper():
         return self.sample_range_time(start, end, sample_hour=True)
 
 
-
-
 if __name__ == '__main__':
     # region открыть базу
     # path = "data.db"
@@ -185,7 +189,7 @@ if __name__ == '__main__':
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
-    kp.seq_print(kp.sample_all())
+    # kp.seq_print(kp.cursor.execute("SELECT * FROM club WHERE (dt BETWEEN ? AND ?) AND (mhour >= ? AND mhour <=  ?) AND mminute = 0"), ())
     # Keeper.seq_print(kp.sample_all())
     # region Description
     # r = kp.sample_hour("28.09.2017 09:00:00", "28.09.2017 23:00:00")
@@ -247,4 +251,3 @@ if __name__ == '__main__':
 
     # kp.create_table(table())
     kp.close()
-

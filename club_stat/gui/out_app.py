@@ -21,28 +21,43 @@ class OutApp(QtWidgets.QWidget):
         t_start = datetime.datetime.strptime("09:00", "%H:%M").time()
         self.form.dt_start_edit.setDate(d_start)
         self.form.dt_start_edit.setTime(t_start)
+        self.form.dt_start_edit.setCalendarPopup(True)
 
         current_dt = datetime.datetime.now()
         d_end = current_dt.date()
         t_end = datetime.datetime.strptime("09:00", "%H:%M").time()
         self.form.dt_end_edit.setDate(d_end)
         self.form.dt_end_edit.setTime(t_end)
-
-        t_step = datetime.datetime.strptime("01:00:00", "%H:%M:%S").time()
-        self.form.step_edit.setTime(t_step)
+        self.form.dt_end_edit.setCalendarPopup(True)
 
         update_btn_size = QtCore.QSize(22, 22)
         self.form.update_graph_btn.clicked.connect(self.update_graph)
         self.form.update_graph_btn.setIconSize(update_btn_size)
         self.form.update_graph_btn.setFixedSize(update_btn_size)
 
+        self.step_btn = dict(step1=self.form.step1,
+                             step2=self.form.step2,
+                             step30=self.form.step30)
+
+
+    def check_step(self, step_name):
+        self.step_btn[step_name].setChecked(True)
+
+    def current_step(self):
+        for s in self.step_btn:
+            if self.step_btn[s].isChecked(): return s
+
+
     def update_graph(self):
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
         dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
+        step = self.current_step()
+        print(step)
         keep = sql_keeper.Keeper(self.db_path)
         keep.open_connect()
         keep.open_cursor()
-        res = keep.sample_range_date(dt_start, dt_end)
+        res = keep.sample_range_date(dt_start, dt_end, step)
+        print(res, res)
         for i in res:
             print(i)
 
