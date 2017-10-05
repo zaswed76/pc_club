@@ -28,23 +28,38 @@ class OutApp(QtWidgets.QWidget):
         self.form.dt_end_edit.setDate(d_end)
         self.form.dt_end_edit.setTime(t_end)
 
-        t_step = datetime.datetime.strptime("01:00:00", "%H:%M:%S").time()
-        self.form.step_edit.setTime(t_step)
-
         update_btn_size = QtCore.QSize(22, 22)
         self.form.update_graph_btn.clicked.connect(self.update_graph)
         self.form.update_graph_btn.setIconSize(update_btn_size)
         self.form.update_graph_btn.setFixedSize(update_btn_size)
 
+        self.time_steps = {
+            self.form.step1.objectName(): self.form.step1,
+            self.form.step2.objectName(): self.form.step2,
+            self.form.step30.objectName(): self.form.step30
+                           }
+
     def update_graph(self):
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
         dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
+        time_step = self.get_time_step()
+        print(time_step)
         keep = sql_keeper.Keeper(self.db_path)
         keep.open_connect()
         keep.open_cursor()
-        res = keep.sample_range_date(dt_start, dt_end)
+        res = keep.sample_range_date(dt_start, dt_end, time_step)
         for i in res:
             print(i)
+
+    def set_step(self, step_name):
+        getattr(self.form, step_name).setChecked(True)
+
+    def get_time_step(self):
+        for n in self.time_steps:
+            if self.time_steps[n].isChecked():
+                return n
+
+
 
 
 

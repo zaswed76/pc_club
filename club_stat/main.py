@@ -267,6 +267,7 @@ class Main:
 
     def export_to_xlsx(self):
         out_app = OutApp(pth.DATA_FILE_2)
+        out_app.set_step(self.cfg["step_name"])
         out_app.show()
 
     def closeEvent(self, event):

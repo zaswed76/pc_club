@@ -118,26 +118,23 @@ class Keeper():
 
         return datetime.datetime.strptime(line, "%d.%m.%Y %H:%M:%S")
 
-    def sample_range_date(self, date_start , date_end):
+    def sample_range_date(self, date_start , date_end, time_step):
 
         """
 
         :param date_start : datetime.datetime
         :param date_end: datetime.datetime
         """
-        start_date = date_start.date()
-        end_date = date_end.date()
-        z1 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour >= 9 OR mhour = 0 "
-        self.cursor.execute(z1, (start_date,))
-        r1 = self.cursor.fetchall()
+        start_date = date_start
+        end_date = date_end
+        req = {}
+        req["step1"] = "SELECT * FROM club WHERE (data_time BETWEEN ? AND ?) AND mminute = 0"
 
-        z2 = "SELECT * FROM club WHERE dt = ? AND mminute = 0 OR mminute = 30 AND mhour > 0 AND mhour <= 9 "
-        self.cursor.execute(z2, (end_date,))
-        r2 = self.cursor.fetchall()
-        r = itertools.chain(r1, r2)
-        print(r2)
-        print("-------------------")
-        return sort_seq(r)
+        req["step30"] = "SELECT * FROM club WHERE (data_time BETWEEN ? AND ?) AND (mminute = 0 OR mminute = 30)"
+
+        self.cursor.execute(req[time_step], (start_date, end_date))
+        r1 = self.cursor.fetchall()
+        return sort_seq(r1)
 
     def sample_all(self):
         self.cursor.execute("SELECT * FROM club")
