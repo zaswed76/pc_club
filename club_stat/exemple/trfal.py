@@ -23,7 +23,6 @@ class State(collections.Iterator):
         for n, v in zip(self.s, state):
             self.state[n] = v
 
-
     def __next__(self):
         if self.value == self.stop:
             raise  StopIteration
