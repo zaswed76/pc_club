@@ -20,7 +20,7 @@ class Graph:
         self.ax.set_title(self.title)
         self.ax.set_xlabel(self.x_lb)
         self.ax.set_ylabel(self.y_lb)
-        self.ax.set_xticklabels(times)
+        self.ax.set_xticklabels(self.times)
         plt.ylim([0, 50])
         rects = self.ax.patches
 
@@ -45,4 +45,4 @@ if __name__ == '__main__':
     times.extend(x_labels0)
     times.extend(x_labels1)
     gr = Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
-    gr.save("aaa.png")
+    gr.show()

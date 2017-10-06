@@ -1,12 +1,14 @@
-
-import datetime
 import collections
-from club_stat import pth
-from club_stat.sql import sql_keeper
 
+def resort(lst):
+    t = []
+    m = []
+    for req in lst:
+        t.append(req[0])
+        m.append(req[1])
+    return (t, m)
 
-
-class State(collections.Iterator):
+class MState(collections.Iterator):
     s = ["dt",
     "data_time",
     "mhour",
@@ -44,29 +46,10 @@ class State(collections.Iterator):
 
 class States:
     def __init__(self, data):
-        self.data = [State(x) for x in data]
+        self.data = [MState(x) for x in data]
 
     def __call__(self, *args):
         r = []
         for x in self.data:
             r.append(x(*args))
         return r
-
-
-
-
-if __name__ == '__main__':
-    path = pth.DATA_FILE_2
-    kp = sql_keeper.Keeper(path)
-    kp.open_connect()
-    kp.open_cursor()
-
-    ds = datetime.datetime.strptime("02.10.2017 14:00", "%d.%m.%Y %H:%M")
-    de = datetime.datetime.strptime("02.10.2017 18:01", "%d.%m.%Y %H:%M")
-
-    res = kp.sample_range_date(ds, de, "step1")
-    st = States(res)
-
-    print((st("visitor", "mhour")))
-
-

@@ -4,6 +4,9 @@ import datetime
 from PyQt5 import QtWidgets, uic, QtCore
 from PyQt5.QtCore import QDate, QDateTime
 from club_stat.sql import sql_keeper
+from club_stat import mstat
+from club_stat.gui.graph import graph
+from club_stat import pth
 
 root = os.path.join(os.path.dirname(__file__))
 ui_pth = os.path.join(root, "ui/out_form.ui")
@@ -43,13 +46,20 @@ class OutApp(QtWidgets.QWidget):
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
         dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
         time_step = self.get_time_step()
-        print(time_step)
+
         keep = sql_keeper.Keeper(self.db_path)
         keep.open_connect()
         keep.open_cursor()
         res = keep.sample_range_date(dt_start, dt_end, time_step)
-        for i in res:
-            print(i)
+        stat_obj = mstat.States(res)
+        time_lst, mans = mstat.resort(stat_obj("mhour", "visitor"))
+
+
+
+        times = ["{number:02}".format(number=x) for x in time_lst]
+
+        gr = graph.Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
+        gr.save(pth.TEMP_GRAPH)
 
     def set_step(self, step_name):
         getattr(self.form, step_name).setChecked(True)
