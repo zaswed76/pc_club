@@ -1,7 +1,7 @@
 import os
 import sys
 import datetime
-from PyQt5 import QtWidgets, uic, QtCore
+from PyQt5 import QtWidgets, uic, QtCore, QtGui
 from PyQt5.QtCore import QDate, QDateTime
 from club_stat.sql import sql_keeper
 from club_stat import mstat
@@ -11,9 +11,6 @@ from club_stat import pth
 root = os.path.join(os.path.dirname(__file__))
 ui_pth = os.path.join(root, "ui/out_form.ui")
 
-class Scene(QtWidgets.QGraphicsScene):
-    def __init__(self, *__args):
-        super().__init__(*__args)
 
 class OutApp(QtWidgets.QWidget):
     def __init__(self, db_path):
@@ -42,6 +39,7 @@ class OutApp(QtWidgets.QWidget):
 
 
 
+
         self.time_steps = {
             self.form.step1.objectName(): self.form.step1,
             self.form.step2.objectName(): self.form.step2,
@@ -66,6 +64,7 @@ class OutApp(QtWidgets.QWidget):
 
         gr = graph.Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
         gr.save(pth.TEMP_GRAPH)
+        self.form.graph_lb.setPixmap(QtGui.QPixmap(pth.TEMP_GRAPH))
 
     def set_step(self, step_name):
         getattr(self.form, step_name).setChecked(True)
