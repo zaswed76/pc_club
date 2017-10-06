@@ -16,12 +16,12 @@ class Graph:
 
     def create_plot(self):
         freq_series = pd.Series.from_array(self.human)
-        self.ax = freq_series.plot(kind='bar', width = 0.8)
+        self.ax = freq_series.plot(kind='bar', width = 0.7)
         self.ax.set_title(self.title)
         self.ax.set_xlabel(self.x_lb)
         self.ax.set_ylabel(self.y_lb)
         self.ax.set_xticklabels(self.times)
-        plt.ylim([0, 50])
+        plt.ylim([0, 40])
         rects = self.ax.patches
 
 
@@ -32,9 +32,15 @@ class Graph:
 
     def show(self):
         plt.show()
+        plt.clf()
+        plt.cla()
+        plt.close()
 
     def save(self, path):
         plt.savefig(path)
+        plt.clf()
+        plt.cla()
+        plt.close()
 
 if __name__ == '__main__':
     mans = [6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3, 7, 8,

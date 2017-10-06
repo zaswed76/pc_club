@@ -1,6 +1,8 @@
 import os
 import sys
 import datetime
+import tempfile
+
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 from PyQt5.QtCore import QDate, QDateTime
 from club_stat.sql import sql_keeper
@@ -61,10 +63,24 @@ class OutApp(QtWidgets.QWidget):
 
 
         times = ["{number:02}".format(number=x) for x in time_lst]
+        print(times, len(times), "times")
+        print("-----------------------")
+        print(mans, len(mans), "mans")
+        try:
+            gr = graph.Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
+        except TypeError:
+            pass
+        else:
+            temp = tempfile.mkstemp()[1] + ".png"
+            gr.save(temp)
+            self.form.graph_lb.clear()
+            pxm = QtGui.QPixmap(temp)
+            self.form.graph_lb.setPixmap(pxm)
+            self.form.graph_lb.resize(pxm.size())
+            self.form.graph_lb.setScaledContents(True)
+            # self.form.graph_lb.setMinimumSize(pxm.size())
+            # QtWidgets.QLabel
 
-        gr = graph.Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
-        gr.save(pth.TEMP_GRAPH)
-        self.form.graph_lb.setPixmap(QtGui.QPixmap(pth.TEMP_GRAPH))
 
     def set_step(self, step_name):
         getattr(self.form, step_name).setChecked(True)
