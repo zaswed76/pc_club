@@ -11,6 +11,10 @@ from club_stat import pth
 root = os.path.join(os.path.dirname(__file__))
 ui_pth = os.path.join(root, "ui/out_form.ui")
 
+class Scene(QtWidgets.QGraphicsScene):
+    def __init__(self, *__args):
+        super().__init__(*__args)
+
 class OutApp(QtWidgets.QWidget):
     def __init__(self, db_path):
         super().__init__()
@@ -35,6 +39,8 @@ class OutApp(QtWidgets.QWidget):
         self.form.update_graph_btn.clicked.connect(self.update_graph)
         self.form.update_graph_btn.setIconSize(update_btn_size)
         self.form.update_graph_btn.setFixedSize(update_btn_size)
+
+
 
         self.time_steps = {
             self.form.step1.objectName(): self.form.step1,
