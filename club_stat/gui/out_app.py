@@ -13,6 +13,14 @@ from club_stat import pth
 root = os.path.join(os.path.dirname(__file__))
 ui_pth = os.path.join(root, "ui/out_form.ui")
 
+def rs(lst):
+    res = []
+    for i in lst:
+        if not i in res:
+            res.append(i)
+        else:
+            res.append("")
+    return res
 
 class OutApp(QtWidgets.QWidget):
     def __init__(self, db_path):
@@ -48,6 +56,8 @@ class OutApp(QtWidgets.QWidget):
             self.form.step30.objectName(): self.form.step30
                            }
 
+
+
     def update_graph(self):
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
         dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
@@ -61,11 +71,11 @@ class OutApp(QtWidgets.QWidget):
         time_lst, mans = mstat.resort(stat_obj("mhour", "visitor"))
 
 
+        if len(time_lst) <= 24:
+            times = ["{number:02}".format(number=x) for x in time_lst]
+        else:
+            times = rs(time_lst)
 
-        times = ["{number:02}".format(number=x) for x in time_lst]
-        print(times, len(times), "times")
-        print("-----------------------")
-        print(mans, len(mans), "mans")
         try:
             gr = graph.Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
         except TypeError:
