@@ -8,7 +8,7 @@ from PyQt5.QtCore import QDate, QDateTime
 from club_stat.sql import sql_keeper
 from club_stat import mstat
 from club_stat.gui.graph import graph
-from club_stat import pth
+import numpy as np
 
 root = os.path.join(os.path.dirname(__file__))
 ui_pth = os.path.join(root, "ui/out_form.ui")
