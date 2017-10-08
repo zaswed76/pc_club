@@ -1,34 +1,32 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 
-frequencies = [6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3, 7, 8,
-               6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3]
 
-freq_series = pd.Series.from_array(frequencies)   # in my original code I create a series and run on that, so for consistency I create a series from the list.
 
-x_labels0 = ["{number:02}".format(number=x) for x in list(range(9, 25))]
-x_labels1 = ["{number:02}".format(number=x) for x in list(range(1, 10))]
-x_labels = []
-x_labels.extend(x_labels0)
-x_labels.extend(x_labels1)
+import sys
+from PyQt5 import QtWidgets as QtGui
+from PyQt5 import QtCore as QtCore
 
-# now to plot the figure...
-# plt.figure(figsize=(10, 5))
-ax = freq_series.plot(kind='bar', width = 0.8)
-ax.set_title("")
-ax.set_xlabel("время")
-ax.set_ylabel("Человек")
-ax.set_xticklabels(x_labels)
-plt.ylim([0, 50])
-rects = ax.patches
+class X(QtGui.QMainWindow):
+	def __init__(self):
+		QtGui.QMainWindow.__init__(self)
+		self.label = QtGui.QLabel(self)
+		self.setCentralWidget(self.label)
+		dialog = Dialog(self)
+		dialog.signal.connect(self.slot)
+		dialog.show()
 
-# Now make some labels
-labels = [i for i in frequencies]
+	def slot(self):
+		self.label.setText(self.label.text()+u"Обломись баклан!\n")
 
-for rect, label in zip(rects, labels):
-    height = rect.get_height()
-    ax.text(rect.get_x() + rect.get_width()/2, height + 0.4, label, ha='center', va='bottom')
+class Dialog(QtGui.QDialog):
+	signal = QtCore.Signal()
+	def __init__(self, parent):
+		QtGui.QDialog.__init__(self, parent)
+		self.knopka = QtGui.QPushButton(self)
+		self.knopka.setText(u"Нажми меня")
+		self.knopka.clicked.connect(self.signal)
 
-plt.show()
-# plt.savefig("image.png")
+if __name__ == '__main__':
+	app = QtGui.QApplication(sys.argv)
+	win = X()
+	win.show()
+	sys.exit(app.exec_())
