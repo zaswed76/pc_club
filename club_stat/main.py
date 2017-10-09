@@ -56,7 +56,11 @@ class Web(QObject):
         self.browser_pos_flag = False
         self._change_time = (0, 0, 0)
         self.clubs = club.Clubs()
-        self.clubs["les"] = club.Club(club.Club.LES, club.Statistics())
+        self.clubs = club.Clubs()
+        self.clubs.add_club(club.Club(club.Club.LES))
+        self.clubs.add_club(club.Club(club.Club.TROYA))
+        self.clubs.add_club(club.Club(club.Club.AKADEM))
+        self.clubs.add_club(club.Club(club.Club.DREAM))
 
 
     @property
@@ -102,9 +106,10 @@ class Web(QObject):
 
         seq = tuple(seq)
         self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[13]), "none")
+
         # записать данные
-        self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
-        self.keeper.commit()
+        # self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
+        # self.keeper.commit()
 
     def web_process_stop(self):
         self.running = False

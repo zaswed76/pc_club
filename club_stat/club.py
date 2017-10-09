@@ -65,10 +65,9 @@ class Club:
         dream="IT Land DreamTown"
     )
 
-    def __init__(self, club_name, statistics, **kwargs):
+    def __init__(self, club_name, **kwargs):
         self.store ={}
         self.name = club_name
-        self.stat = statistics
 
     @property
     def id(self):
@@ -88,10 +87,13 @@ class Club:
 
 if __name__ == '__main__':
     clubs = Clubs()
-    clubs["les"] = Club(Club.LES, Statistics())
-    # clubs.add_club()
-    print(clubs.les.name)
-    print(clubs.les.id)
-    print(clubs["les"].field_name)
-    print(clubs["les"].name)
-    # print(clubs.les.append_stat("taken", 4))
+    clubs.add_club(Club(Club.LES))
+    clubs.add_club(Club(Club.TROYA))
+    clubs.add_club(Club(Club.AKADEM))
+    clubs.add_club(Club(Club.DREAM))
+
+
+    for cl in clubs.values():
+        print(cl.field_name)
+        print(cl.id)
+

@@ -27,6 +27,8 @@ class WebDriver:
 
     def select_club(self, club:str):
         select = Select(self.browser.find_element_by_id('club_id'))
+        all_selected_options = select.all_selected_options
+        print(all_selected_options)
         if club.isdigit():
 
             select.select_by_value(club)
@@ -38,4 +40,26 @@ class WebDriver:
 
     def close(self):
         self.browser.quit()
+
+    def get_selected_name(self):
+        select = Select(self.browser.find_element_by_id('club_id'))
+        return [x.text for x in select.options if x]
+
+
+
+
+if __name__ == '__main__':
+    adr = "http://adminold.itland.enes.tech/index.php/map"
+    login_id = 'enter_login'
+    password_id = 'enter_password'
+    submit_name = 'but_m'
+    login = "zaswed"
+    password = "fasadAQ9"
+    driver = WebDriver(adr, WebDriver.Chrome)
+    driver.log_in(login_id, password_id, submit_name,
+                            login, password)
+    print(driver.get_selected_name())
+    driver.close()
+
+
 
