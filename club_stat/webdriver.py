@@ -40,6 +40,13 @@ class WebDriver:
         select = Select(self.browser.find_element_by_id('club_id'))
         return [x.text for x in select.options if x]
 
+    def cu(self):
+        obj = self.browser.find_element_by_class_name("map_lft")
+
+        rows = obj.find_elements_by_tag_name("tr")  # get all of the rows in the table
+        for row in rows:
+            col = row.find_elements_by_tag_name("td")[1]
+            print(col.text) #prints text from the element
 
 
 
@@ -53,7 +60,8 @@ if __name__ == '__main__':
     driver = WebDriver(adr, WebDriver.Chrome)
     driver.log_in(login_id, password_id, submit_name,
                             login, password)
-    print(driver.get_selected_name())
+    driver.cu()
+
     driver.close()
 
 
