@@ -49,6 +49,9 @@ QPushButton#update_graph_btn {
 
 }
 
+QLabel#graph_lb {
+    border: 1px solid #ececec;
+}
 
 
 /*View {*/

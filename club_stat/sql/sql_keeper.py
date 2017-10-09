@@ -132,8 +132,6 @@ class Keeper():
 
         req["step30"] = "SELECT * FROM club WHERE(club = ?) AND (data_time BETWEEN ? AND ?) AND (mminute = 0 OR mminute = 30)"
 
-        print(club_name)
-
         self.cursor.execute(req[time_step], (club_name, start_date, end_date))
         r1 = self.cursor.fetchall()
         return sort_seq(r1)

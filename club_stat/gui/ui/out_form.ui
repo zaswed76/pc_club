@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,2,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,11,1">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -27,8 +27,14 @@
        </item>
        <item row="0" column="1">
         <widget class="QDateTimeEdit" name="dt_start_edit">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="displayFormat">
           <string>dd.MM.yyyy      H:mm</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -47,6 +53,9 @@
         <widget class="QDateTimeEdit" name="dt_end_edit">
          <property name="displayFormat">
           <string>dd.MM.yyyy      H:mm</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -137,6 +146,29 @@
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>45</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="export_to_png">
+       <property name="text">
+        <string>Export to png</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -152,7 +184,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
+    <widget class="QFrame" name="graph_frame">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -186,13 +218,26 @@
         <property name="scaledContents">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true"/>
+    <widget class="QFrame" name="frame">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLabel" name="out_status">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
