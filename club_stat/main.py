@@ -76,14 +76,17 @@ class Web(QObject):
 
         try:
             time.sleep(1)
+        # переключиться на клуб
             self.diver.select_club("4")
         except http.client.CannotSendRequest as er:
             print(er, "main line 80")
         time.sleep(1)
+        # получить текущее время
         date_time = datetime.datetime.now()
         date = date_time.date()
         h = date_time.time().hour
         minute = date_time.time().minute
+        # получить данные
         try:
             for opt in stat_names:
                 stat[opt] = self.diver.get_data(opt)
@@ -99,6 +102,7 @@ class Web(QObject):
 
         seq = tuple(seq)
         self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[13]), "none")
+        # записать данные
         self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
         self.keeper.commit()
 
@@ -144,7 +148,7 @@ class Web(QObject):
             if not self.browser_pos_flag:
 
                 self.diver.browser.set_window_position(-10000, 0)
-            self.browser_pos_flag = True
+                self.browser_pos_flag = True
             h, m, s = self.change_time
             time.sleep(((h * 3600) + (m*60) + s) - 4)
 
