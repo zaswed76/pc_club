@@ -27,13 +27,8 @@ class WebDriver:
 
     def select_club(self, club:str):
         select = Select(self.browser.find_element_by_id('club_id'))
-        all_selected_options = select.all_selected_options
-        print(all_selected_options)
-        if club.isdigit():
+        select.select_by_value(club)
 
-            select.select_by_value(club)
-        else:
-            select.select_by_visible_text(club)
 
     def get_data(self, field):
         return self.browser.find_element_by_id(field).text

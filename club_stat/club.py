@@ -77,6 +77,10 @@ class Club:
     def field_name(self):
         return self._field_names[self.name]
 
+    @staticmethod
+    def get_field_by_name(name):
+        return Club._field_names[name]
+
     def __repr__(self):
         return "{} - {}".format(self.__class__.__name__, self.name)
 
@@ -93,7 +97,7 @@ if __name__ == '__main__':
     clubs.add_club(Club(Club.DREAM))
 
 
-    for cl in clubs.values():
-        print(cl.field_name)
-        print(cl.id)
+    for name, cl in clubs.items():
+        print(cl.field_name, name)
+        print(type(cl.id))
 

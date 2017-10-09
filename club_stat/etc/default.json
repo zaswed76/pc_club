@@ -10,7 +10,8 @@
     "time_change": [
         0,
         0,
-        47
+        15
     ],
-    "step_name": "step1"
+    "step_name": "step1",
+    "current_club": "les"
 }

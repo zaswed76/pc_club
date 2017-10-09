@@ -12,9 +12,6 @@ from club_stat import webdriver, config, club
 from club_stat.sql import sql_keeper
 from club_stat import pth
 
-
-
-
 from club_stat.gui.itstat import ItStat
 from club_stat.gui.out_app import OutApp
 
@@ -28,6 +25,7 @@ ICON_DIR = os.path.join(ROOT, "resource/icons")
 ETC = os.path.join(ROOT, "etc")
 CONFIG_PATH = os.path.join(ETC, "default.json")
 
+
 def qt_message_handler(mode, context, message):
     if mode == QtCore.QtInfoMsg:
         mode = 'INFO'
@@ -40,10 +38,12 @@ def qt_message_handler(mode, context, message):
     else:
         mode = 'DEBUG'
     print('qt_message_handler: line: %d, func: %s(), file: %s' % (
-          context.line, context.function, context.file))
+        context.line, context.function, context.file))
     print('  %s: %s\n' % (mode, message))
 
+
 QtCore.qInstallMessageHandler(qt_message_handler)
+
 
 class Web(QObject):
     finished = pyqtSignal()
@@ -62,7 +62,6 @@ class Web(QObject):
         self.clubs.add_club(club.Club(club.Club.AKADEM))
         self.clubs.add_club(club.Club(club.Club.DREAM))
 
-
     @property
     def change_time(self):
         return self._change_time
@@ -76,40 +75,43 @@ class Web(QObject):
         time.sleep(1)
         stat = collections.OrderedDict()
         stat_names = ["load", "taken", "free", "guest",
-                     "resident", "admin", "workers", "school"]
+                      "resident", "admin", "workers", "school"]
 
-        try:
-            time.sleep(1)
-        # переключиться на клуб
-            self.diver.select_club("4")
-        except http.client.CannotSendRequest as er:
-            print(er, "main line 80")
-        time.sleep(1)
         # получить текущее время
         date_time = datetime.datetime.now()
         date = date_time.date()
         h = date_time.time().hour
         minute = date_time.time().minute
-        # получить данные
-        try:
-            for opt in stat_names:
-                stat[opt] = self.diver.get_data(opt)
 
-            stat["visitor"] = sum([int(x) for x in (stat["guest"], stat["resident"], stat["school"])])
+        for club_obj in self.clubs.values():
+            try:
+                time.sleep(1)
+                # переключиться на клуб
+                self.diver.select_club(str(club_obj.id))
+            except http.client.CannotSendRequest as er:
+                print(er, "main line 80")
+            time.sleep(1)
 
-        except Exception as er:
+            # получить данные
 
-            raise Exception(er)
-
-        seq = [date, date_time, h, minute, self.clubs["les"].field_name]
-        seq.extend(stat.values())
-
-        seq = tuple(seq)
-        self.str_web_process.emit("запись: {} - {} - {}".format(seq[1], seq[2], seq[13]), "none")
-
-        # записать данные
-        # self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
-        # self.keeper.commit()
+            try:
+                for opt in stat_names:
+                    stat[opt] = self.diver.get_data(opt)
+                stat["visitor"] = sum(
+                    [int(x) for x in
+                     (stat["guest"], stat["resident"],
+                      stat["school"])])
+            except Exception as er:
+                raise Exception(er)
+            seq = [date, date_time, h, minute, club_obj.field_name]
+            seq.extend(stat.values())
+            seq = tuple(seq)
+            self.str_web_process.emit(
+                "запись: {} - {} - {}".format(seq[1], seq[2],
+                                              seq[13]), "none")
+            # записать данные
+            self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
+            self.keeper.commit()
 
     def web_process_stop(self):
         self.running = False
@@ -127,14 +129,15 @@ class Web(QObject):
         password = self.parent.gui.form.password.text()
 
         try:
-            self.diver = webdriver.WebDriver(adr, webdriver.WebDriver.Chrome)
+            self.diver = webdriver.WebDriver(adr,
+                                             webdriver.WebDriver.Chrome)
         except selenium.common.exceptions.WebDriverException:
             self.str_web_process.emit("не удалось запустить страницу")
             self.running = False
         else:
             self.str_web_process.emit("запустился драйвер", "none")
             self.diver.log_in(login_id, password_id, submit_name,
-                            login, password)
+                              login, password)
             self.str_web_process.emit("залогинился", "log_in")
             time.sleep(2)
 
@@ -150,18 +153,17 @@ class Web(QObject):
                 self.read_data()
             except Exception as er:
                 print(er)
-            if not self.browser_pos_flag:
-
-                self.diver.browser.set_window_position(-10000, 0)
-                self.browser_pos_flag = True
+            # if not self.browser_pos_flag:
+            #     self.diver.browser.set_window_position(-10000, 0)
+            #     self.browser_pos_flag = True
             h, m, s = self.change_time
-            time.sleep(((h * 3600) + (m*60) + s) - 4)
+            time.sleep(((h * 3600) + (m * 60) + s) - 4)
 
         self.finished.emit()
         self.browser_pos_flag = False
 
-class Main:
 
+class Main:
     def __init__(self):
         QtCore.qDebug('something informative')
         self.web_code = dict(log_in=self.save_login)
@@ -200,40 +202,40 @@ class Main:
         self.gui.form.start.clicked.connect(self.start)
         self.gui.form.start.setDisabled(not self._fields_valid())
 
-
         self.gui.form.stop.clicked.connect(self.stop)
         self.gui.form.stop.setDisabled(not self.web.running)
 
         # Export btn
 
-        self.gui.form.export_to_xlsx.clicked.connect(self.export_to_xlsx)
-
-
+        self.gui.form.export_to_xlsx.clicked.connect(
+            self.export_to_xlsx)
 
         # Password
-        self.gui.form.password.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.gui.form.password.textChanged[str].connect(self._password_changed)
+        self.gui.form.password.setEchoMode(
+            QtWidgets.QLineEdit.Password)
+        self.gui.form.password.textChanged[str].connect(
+            self._password_changed)
         self.gui.form.password.setPlaceholderText("Пароль")
         # Login
         completer = QtWidgets.QCompleter(self.cfg["logins"])
         self.gui.form.login.setCompleter(completer)
-        self.gui.form.login.textChanged[str].connect(self._login_changed)
+        self.gui.form.login.textChanged[str].connect(
+            self._login_changed)
         self.gui.form.login.setText(self.cfg["last_login"])
         # Address
         completer = QtWidgets.QCompleter(self.cfg["address"])
         self.gui.form.adress.setCompleter(completer)
-        self.gui.form.adress.textChanged[str].connect(self._address_changed)
+        self.gui.form.adress.textChanged[str].connect(
+            self._address_changed)
         self.gui.form.adress.setText(self.cfg["last_address"])
         # TimeChange
         self.gui.form.time_edit.setDisplayFormat("HH:mm:ss")
         self.gui.form.time_edit.setMinimumTime(QtCore.QTime(0, 0, 10))
-        self.gui.form.time_edit.setTime(QtCore.QTime(*self.cfg["time_change"]))
-
-
+        self.gui.form.time_edit.setTime(
+            QtCore.QTime(*self.cfg["time_change"]))
 
         self.gui.statusBar()
         sys.exit(app.exec_())
-
 
     def _login_changed(self, s):
         self.gui.form.start.setDisabled(not self._fields_valid())
@@ -260,9 +262,9 @@ class Main:
             self.cfg["address"].append(adr)
         self.cfg["last_address"] = adr
         qt = self.gui.form.time_edit.time()
-        self.cfg["time_change"] = [qt.hour(), qt.minute(), qt.second()]
+        self.cfg["time_change"] = [qt.hour(), qt.minute(),
+                                   qt.second()]
         config.save(CONFIG_PATH, self.cfg)
-
 
     def start(self):
         self.web.change_time = self.gui.form.time_edit.time()
@@ -273,10 +275,10 @@ class Main:
         self.gui.form.stop.setDisabled(not self.web.running)
         self.gui.form.start.setDisabled(self.web.running)
 
-
     def export_to_xlsx(self):
         out_app = OutApp(pth.DATA_FILE_2)
         out_app.set_step(self.cfg["step_name"])
+        out_app.set_club(self.cfg["current_club"])
         out_app.show()
 
     def closeEvent(self, event):

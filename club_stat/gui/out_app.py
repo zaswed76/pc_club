@@ -8,6 +8,7 @@ from PyQt5.QtCore import QDate, QDateTime
 from club_stat.sql import sql_keeper
 from club_stat import mstat
 from club_stat.gui.graph import graph
+from club_stat import club
 import numpy as np
 
 root = os.path.join(os.path.dirname(__file__))
@@ -56,17 +57,23 @@ class OutApp(QtWidgets.QWidget):
             self.form.step30.objectName(): self.form.step30
                            }
 
-
+        self.clubs = {
+            self.form.les.objectName(): self.form.les,
+            self.form.akadem.objectName(): self.form.akadem,
+            self.form.troya.objectName(): self.form.troya,
+            self.form.dream.objectName(): self.form.dream
+                           }
 
     def update_graph(self):
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
         dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
         time_step = self.get_time_step()
+        club_name = self.get_current_club()
 
         keep = sql_keeper.Keeper(self.db_path)
         keep.open_connect()
         keep.open_cursor()
-        res = keep.sample_range_date(dt_start, dt_end, time_step)
+        res = keep.sample_range_date(dt_start, dt_end, time_step, club_name)
         stat_obj = mstat.States(res)
         time_lst, mans = mstat.resort(stat_obj("mhour", "visitor"))
 
@@ -77,7 +84,7 @@ class OutApp(QtWidgets.QWidget):
             times = rs(time_lst)
 
         try:
-            gr = graph.Graph(times, mans, "время", "человек", width=0.8, title="Lesnoy")
+            gr = graph.Graph(times, mans, "время", "человек", width=0.8, title=club_name)
         except TypeError:
             pass
         else:
@@ -95,10 +102,19 @@ class OutApp(QtWidgets.QWidget):
     def set_step(self, step_name):
         getattr(self.form, step_name).setChecked(True)
 
+    def set_club(self, club_name):
+        getattr(self.form, club_name).setChecked(True)
+
     def get_time_step(self):
         for n in self.time_steps:
             if self.time_steps[n].isChecked():
                 return n
+
+    def get_current_club(self):
+        for n in self.clubs:
+            if self.clubs[n].isChecked():
+                return club.Club.get_field_by_name(n)
+
 
 
 

@@ -118,7 +118,7 @@ class Keeper():
 
         return datetime.datetime.strptime(line, "%d.%m.%Y %H:%M:%S")
 
-    def sample_range_date(self, date_start , date_end, time_step):
+    def sample_range_date(self, date_start , date_end, time_step, club_name):
 
         """
 
@@ -128,11 +128,13 @@ class Keeper():
         start_date = date_start
         end_date = date_end
         req = {}
-        req["step1"] = "SELECT * FROM club WHERE (data_time BETWEEN ? AND ?) AND mminute = 0"
+        req["step1"] = "SELECT * FROM club WHERE (club = ?) AND (data_time BETWEEN ? AND ?) AND mminute = 0"
 
-        req["step30"] = "SELECT * FROM club WHERE (data_time BETWEEN ? AND ?) AND (mminute = 0 OR mminute = 30)"
+        req["step30"] = "SELECT * FROM club WHERE(club = ?) AND (data_time BETWEEN ? AND ?) AND (mminute = 0 OR mminute = 30)"
 
-        self.cursor.execute(req[time_step], (start_date, end_date))
+        print(club_name)
+
+        self.cursor.execute(req[time_step], (club_name, start_date, end_date))
         r1 = self.cursor.fetchall()
         return sort_seq(r1)
 
@@ -177,11 +179,12 @@ class Keeper():
 if __name__ == '__main__':
     # region открыть базу
     # path = "data.db"
-    path = r"D:\Serg\project\pc_club\club_stat\tests\data\db__test_time.db"
+    from club_stat import pth
+    path = pth.DATA_FILE_2
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()
-    kp.seq_print(kp.samp_date("29.09.2017"))
+    kp.seq_print(kp.sample_all())
     # Keeper.seq_print(kp.sample_all())
     # region Description
     # r = kp.sample_hour("28.09.2017 09:00:00", "28.09.2017 23:00:00")

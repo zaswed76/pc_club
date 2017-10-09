@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
-    <height>599</height>
+    <width>729</width>
+    <height>724</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,28 +94,28 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QRadioButton" name="radioButton">
+       <widget class="QRadioButton" name="les">
         <property name="text">
          <string>Les</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_2">
+       <widget class="QRadioButton" name="akadem">
         <property name="text">
          <string>Akadem</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_3">
+       <widget class="QRadioButton" name="troya">
         <property name="text">
          <string>Troya</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_4">
+       <widget class="QRadioButton" name="dream">
         <property name="text">
          <string>Dream</string>
         </property>
