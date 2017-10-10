@@ -4,6 +4,7 @@
 import sys
 from PyQt5 import QtWidgets as QtGui
 from PyQt5 import QtCore as QtCore
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 class X(QtGui.QMainWindow):
 	def __init__(self):
@@ -14,11 +15,12 @@ class X(QtGui.QMainWindow):
 		dialog.signal.connect(self.slot)
 		dialog.show()
 
-	def slot(self):
-		self.label.setText(self.label.text()+u"Обломись баклан!\n")
+    @pyqtSlot(int)
+    def slot(self, i):
+		print(i)
 
 class Dialog(QtGui.QDialog):
-	signal = QtCore.Signal()
+	signal = pyqtSignal(int)
 	def __init__(self, parent):
 		QtGui.QDialog.__init__(self, parent)
 		self.knopka = QtGui.QPushButton(self)
