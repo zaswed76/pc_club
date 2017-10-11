@@ -25,44 +25,30 @@ def qt_message_handler(mode, context, message):
 
 QtCore.qInstallMessageHandler(qt_message_handler)
 
-class Communicate(QObject):
-    run_signal = pyqtSignal()
+class BtnLab(QtWidgets.QLabel):
+    signal = pyqtSignal(str)
+    def __init__(self, text, color, parent=None, *__args):
+        super().__init__(*__args)
+        self.color = color
+        self.setStyleSheet("background-color: {}".format(color))
+
+    def mousePressEvent(self, event):
+        # генерируем сигнал
+        self.signal.emit(self.color)
+
 
 class Widget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.resize(500, 500)
-        self.btn = QtWidgets.QPushButton("click", self)
-        self.btn.clicked.connect(self.show_dialog)
-
-    def show_dialog(self):
         self.dialog = Dialog()
-        self.dialog.btn1.c.run_signal.connect(self.slot)
-        self.dialog.btn2.c.run_signal.connect(self.slot)
-
-
+        # соединяем сигнал со слотом
+        self.dialog.btn1.signal.connect(self.press_lb)
+        self.dialog.btn2.signal.connect(self.press_lb)
         self.dialog.show()
 
-    def slot(self):
-        obj = self.sender()
-        print(obj.sender())
 
-
-class BtnLab(QtWidgets.QLabel):
-    signal = pyqtSignal()
-    def __init__(self, text):
-        super().__init__(text)
-        self.c = Communicate()
-
-        self.resize(50, 30)
-        font = QtGui.QFont('Helvetica', 24, QtGui.QFont.Bold)
-        self.setFont(font)
-
-    def mousePressEvent(self, event):
-        self.c.run_signal.emit()
-
-    def go(self):
-        print("go")
+    def press_lb(self, color):
+        self.setStyleSheet("background-color: {}".format(color))
 
 
 
@@ -71,14 +57,11 @@ class Dialog(QtWidgets.QFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-
-
-        self.resize(300, 300)
         box = QtWidgets.QHBoxLayout(self)
-        self.btn1 = BtnLab("1")
+        self.btn1 = BtnLab("1", "green")
         self.btn1.setStyleSheet("background-color: green")
 
-        self.btn2 = BtnLab("2")
+        self.btn2 = BtnLab("2", "blue")
         self.btn2.setStyleSheet("background-color: blue")
 
         box.addWidget(self.btn1)
