@@ -85,10 +85,12 @@ class Web(QObject):
 
         for club_obj in self.clubs.values():
             try:
-                time.sleep(1)
+                time.sleep(3)
                 # переключиться на клуб
                 self.diver.select_club(str(club_obj.id))
             except http.client.CannotSendRequest as er:
+                print(er, "main line 80")
+            except ConnectionRefusedError as er:
                 print(er, "main line 80")
             time.sleep(1)
 
@@ -102,16 +104,22 @@ class Web(QObject):
                      (stat["guest"], stat["resident"],
                       stat["school"])])
             except Exception as er:
-                raise Exception(er)
+                print(er, "main line 107")
             seq = [date, date_time, h, minute, club_obj.field_name]
             seq.extend(stat.values())
             seq = tuple(seq)
-            self.str_web_process.emit(
-                "запись: {} - {} - {}".format(seq[1], seq[2],
-                                              seq[13]), "none")
+            print(seq[1:], len(seq), "line 111")
+            print("-----------------------")
+
             # записать данные
             self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
             self.keeper.commit()
+            try:
+                self.str_web_process.emit(
+                    "запись: {} - {}:{} - {} - {}".format(seq[1], seq[2], seq[3],
+                                                  seq[4], seq[13]), "none")
+            except Exception as er:
+                print(er, "main line 122")
 
     def web_process_stop(self):
         self.running = False
@@ -153,6 +161,9 @@ class Web(QObject):
                 self.read_data()
             except Exception as er:
                 print(er)
+                # self.keeper.close()
+                # self.diver.close()
+
             # if not self.browser_pos_flag:
             #     self.diver.browser.set_window_position(-10000, 0)
             #     self.browser_pos_flag = True
