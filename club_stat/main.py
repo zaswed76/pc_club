@@ -201,7 +201,7 @@ class Main:
 
     def _init_gui(self):
         app = QtWidgets.QApplication(sys.argv)
-        app.setStyleSheet(open(CSS_STYLE, "r").read())
+        app.setStyleSheet(open(pth.CSS_STYLE, "r").read())
         self.gui = ItStat(ICON_DIR)
         self.gui.closeEvent = self.closeEvent
         self.gui.show()

@@ -1,7 +1,7 @@
 
 import os
 ROOT = os.path.join(os.path.dirname(__file__))
-CSS_STYLE = os.path.join(ROOT, "css/style.css")
+CSS_STYLE = os.path.join(ROOT, "style/style.css")
 DATA_DIR = os.path.join(ROOT, "data")
 DATA_FILE = os.path.join(DATA_DIR, "data.db")
 DATA_FILE_2 = os.path.join(DATA_DIR, "data_2.db")
