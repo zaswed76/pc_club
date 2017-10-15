@@ -50,6 +50,7 @@ class Web(QObject):
     str_web_process = pyqtSignal(str, str)
 
     def __init__(self, parent):
+
         super().__init__()
         self.parent = parent
         self.running = False
@@ -57,10 +58,10 @@ class Web(QObject):
         self._change_time = (0, 0, 0)
         self.clubs = club.Clubs()
         self.clubs = club.Clubs()
-        self.clubs.add_club(club.Club(club.Club.LES))
-        self.clubs.add_club(club.Club(club.Club.TROYA))
-        self.clubs.add_club(club.Club(club.Club.AKADEM))
-        self.clubs.add_club(club.Club(club.Club.DREAM))
+        self.clubs.add_club(club.Club(club.Club.LES, 40))
+        self.clubs.add_club(club.Club(club.Club.TROYA, 48))
+        self.clubs.add_club(club.Club(club.Club.AKADEM, 50))
+        self.clubs.add_club(club.Club(club.Club.DREAM, 60))
 
     @property
     def change_time(self):
@@ -85,14 +86,14 @@ class Web(QObject):
 
         for club_obj in self.clubs.values():
             try:
-                time.sleep(3)
+                time.sleep(4)
                 # переключиться на клуб
                 self.diver.select_club(str(club_obj.id))
             except http.client.CannotSendRequest as er:
                 print(er, "main line 80")
             except ConnectionRefusedError as er:
                 print(er, "main line 80")
-            time.sleep(1)
+            time.sleep(2)
 
             # получить данные
 
@@ -287,7 +288,7 @@ class Main:
         self.gui.form.start.setDisabled(self.web.running)
 
     def export_to_xlsx(self):
-        out_app = OutApp(pth.DATA_FILE_2)
+        out_app = OutApp(pth.DATA_FILE_2, self.web.clubs)
         out_app.set_step(self.cfg["step_name"])
         out_app.set_club(self.cfg["current_club"])
         out_app.show()

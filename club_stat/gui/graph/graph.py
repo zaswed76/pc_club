@@ -4,7 +4,8 @@ import matplotlib
 
 
 class Graph:
-    def __init__(self, times, human, x_lb, y_lb, width=0.5, title=""):
+    def __init__(self, times, human, x_lb, y_lb, width=0.5, title="", max=40):
+        self.max = max
         self.title = title
         self.width = width
         self.y_lb = y_lb
@@ -23,7 +24,7 @@ class Graph:
         self.ax.set_ylabel(self.y_lb)
         self.ax.set_xticklabels(self.times)
 
-        plt.ylim([0, 40])
+        plt.ylim([0, self.max])
         rects = self.ax.patches
 
         for rect, label in zip(rects, self.human):

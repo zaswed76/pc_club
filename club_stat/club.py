@@ -65,7 +65,8 @@ class Club:
         dream="IT Land DreamTown"
     )
 
-    def __init__(self, club_name, **kwargs):
+    def __init__(self, club_name, max_visitor, **kwargs):
+        self.max_visitor = max_visitor
         self.store ={}
         self.name = club_name
 
@@ -91,10 +92,10 @@ class Club:
 
 if __name__ == '__main__':
     clubs = Clubs()
-    clubs.add_club(Club(Club.LES))
-    clubs.add_club(Club(Club.TROYA))
-    clubs.add_club(Club(Club.AKADEM))
-    clubs.add_club(Club(Club.DREAM))
+    clubs.add_club(Club(Club.LES, 30))
+    clubs.add_club(Club(Club.TROYA, 30))
+    clubs.add_club(Club(Club.AKADEM, 30))
+    clubs.add_club(Club(Club.DREAM, 30))
 
 
     for name, cl in clubs.items():

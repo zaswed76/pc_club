@@ -26,8 +26,9 @@ def rs(lst):
 
 
 class OutApp(QtWidgets.QWidget):
-    def __init__(self, db_path):
+    def __init__(self, db_path, clubs_object):
         super().__init__()
+        self.clubs_object = clubs_object
         self.pxm = None
         self.current_club_name = None
         self.db_path = db_path
@@ -93,8 +94,9 @@ class OutApp(QtWidgets.QWidget):
             times = rs(time_lst)
         self.form.graph_lb.clear()
         try:
+            club = self.get_club_on_field(self.current_club_name)
             gr = graph.Graph(times, mans, "время", "человек",
-                             width=0.8, title=self.current_club_name)
+                             width=0.8, title=self.current_club_name, max=club.max_visitor)
         except TypeError:
             pass
         else:
@@ -126,6 +128,15 @@ class OutApp(QtWidgets.QWidget):
         for n in self.clubs:
             if self.clubs[n].isChecked():
                 return club.Club.get_field_by_name(n)
+
+    def get_club_on_field(self, field):
+        for club in self.clubs_object.values():
+            if club.field_name == field:
+                return club
+
+
+
+
 
 
 if __name__ == '__main__':
