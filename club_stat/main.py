@@ -177,6 +177,7 @@ class Web(QObject):
 
 class Main:
     def __init__(self):
+
         QtCore.qDebug('something informative')
         self.web_code = dict(log_in=self.save_login)
 
