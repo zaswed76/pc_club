@@ -203,7 +203,7 @@ class Main:
     def _init_gui(self):
         app = QtWidgets.QApplication(sys.argv)
         app.setStyleSheet(open(pth.CSS_STYLE, "r").read())
-        self.gui = ItStat(ICON_DIR)
+        self.gui = ItStat(pth.ICON_DIR)
         self.gui.closeEvent = self.closeEvent
         self.gui.show()
         self.gui.resize(500, 350)

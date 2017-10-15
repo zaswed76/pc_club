@@ -41,7 +41,7 @@ QPushButton#export_to_xlsx {
 }
 
 QPushButton#update_graph_btn {
-    image: url(./resource/icons/update_graph.png);
+    image: url(../resource/icons/update_graph.png);
     border-top: none;
     border-right: none;
     border-bottom: none;
