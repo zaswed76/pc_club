@@ -2,3 +2,4 @@
 recursive-include club_stat/etc *.json
 recursive-include club_stat/gui/ui *.ui
 recursive-include club_stat/style *.css
+recursive-include club_stat/data *.tmp
