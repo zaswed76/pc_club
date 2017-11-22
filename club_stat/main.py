@@ -118,7 +118,7 @@ class Web(QObject):
         password = self.parent.gui.form.password.text()
 
         try:
-            self.diver = webdriver.WebDriver(adr, webdriver.WebDriver.Chrome)
+            self.diver = webdriver.WebDriver(adr, webdriver.WebDriver.Firefox)
         except selenium.common.exceptions.WebDriverException:
             self.str_web_process.emit("не удалось запустить страницу")
             self.running = False

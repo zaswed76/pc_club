@@ -39,3 +39,5 @@ class WebDriver:
     def close(self):
         self.browser.quit()
 
+if __name__ == '__main__':
+    dr = WebDriver("http://adminold.itland.enes.tech/index.php/main", WebDriver.Firefox)
