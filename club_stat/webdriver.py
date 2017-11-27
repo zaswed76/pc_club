@@ -14,7 +14,7 @@ class WebDriver:
     Firefox = webdriver.Firefox
     Chrome = webdriver.Chrome
     def __init__(self, adr):
-        self.driver_pth = os.path.join(pth.ROOT, "chromedriver.exe")
+        self.driver_pth = os.path.join(pth.DATA_DIR, "chromedriver.exe")
         self.browser = self._init_driver()
         self.browser.get(adr)
         self.browser.maximize_window()
