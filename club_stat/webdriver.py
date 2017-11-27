@@ -1,6 +1,9 @@
+import os
 
+from club_stat import pth
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+import selenium.webdriver.chrome.service as service
 import http
 
 enter_login = 'enter_login'
@@ -10,11 +13,18 @@ submit = 'but_m'
 class WebDriver:
     Firefox = webdriver.Firefox
     Chrome = webdriver.Chrome
-    def __init__(self, adr, browser):
-        self.browser = browser()
+    def __init__(self, adr):
+        self.driver_pth = os.path.join(pth.ROOT, "chromedriver.exe")
+        self.browser = self._init_driver()
         self.browser.get(adr)
         self.browser.maximize_window()
 
+    def _init_driver(self):
+        self.service = service.Service(self.driver_pth)
+        self.service.start()
+        capabilities = {'chrome.binary': "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"}
+        driver = webdriver.Remote(self.service.service_url, capabilities)
+        return driver
 
     def log_in(self, login_id, password_id, submit_name,
                         login, password):
@@ -57,7 +67,7 @@ if __name__ == '__main__':
     submit_name = 'but_m'
     login = "zaswed"
     password = "fasadAQ9"
-    driver = WebDriver(adr, WebDriver.Chrome)
+    driver = WebDriver(adr, WebDriver.Firefox)
     driver.log_in(login_id, password_id, submit_name,
                             login, password)
     driver.cu()

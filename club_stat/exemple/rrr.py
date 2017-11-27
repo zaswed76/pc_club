@@ -1,34 +1,22 @@
-#
-#
-#
-# import sys
-# from PyQt5 import QtWidgets as QtGui
-# from PyQt5 import QtCore as QtCore
-# from PyQt5.QtCore import pyqtSignal, pyqtSlot
-#
-# class X(QtGui.QMainWindow):
-# 	def __init__(self):
-# 		QtGui.QMainWindow.__init__(self)
-# 		self.label = QtGui.QLabel(self)
-# 		self.setCentralWidget(self.label)
-# 		dialog = Dialog(self)
-# 		dialog.signal.connect(self.slot)
-# 		dialog.show()
-#
-#     @pyqtSlot(int)
-#     def slot(self, i):
-# 		print(i)
-#
-# class Dialog(QtGui.QDialog):
-# 	signal = pyqtSignal(int)
-# 	def __init__(self, parent):
-# 		QtGui.QDialog.__init__(self, parent)
-# 		self.knopka = QtGui.QPushButton(self)
-# 		self.knopka.setText(u"Нажми меня")
-# 		self.knopka.clicked.connect(self.signal)
-#
-# if __name__ == '__main__':
-# 	app = QtGui.QApplication(sys.argv)
-# 	win = X()
-# 	win.show()
-# 	sys.exit(app.exec_())
+
+
+
+import os
+
+from club_stat import pth
+
+
+
+
+import time
+
+from selenium import webdriver
+import selenium.webdriver.chrome.service as service
+dr = os.path.join(pth.ROOT, "chromedriver.exe")
+service = service.Service(dr)
+service.start()
+capabilities = {'chrome.binary': "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"}
+driver = webdriver.Remote(service.service_url, capabilities)
+driver.get('http://www.google.com/xhtml')
+time.sleep(5) # Let the user actually see something!
+driver.quit()
