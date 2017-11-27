@@ -4,4 +4,3 @@ recursive-include club_stat/gui/ui *.ui
 recursive-include club_stat/style *.css
 recursive-include club_stat/data *
 recursive-include club_stat/resource/icons *
-recursive-include club_stat *
