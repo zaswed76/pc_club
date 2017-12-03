@@ -13,16 +13,18 @@ submit = 'but_m'
 class WebDriver:
     Firefox = webdriver.Firefox
     Chrome = webdriver.Chrome
-    def __init__(self, adr):
-        self.driver_pth = os.path.join(pth.DATA_DIR, "chromedriver.exe")
-        self.browser = self._init_driver()
+    def __init__(self, adr, driver_pth, binary_pth):
+        self.binary_pth = binary_pth
+        self.driver_pth = driver_pth
+
+        self.service = service.Service(self.driver_pth)
+        self.service.start()
+        self.browser = self._driver()
         self.browser.get(adr)
         self.browser.maximize_window()
 
-    def _init_driver(self):
-        self.service = service.Service(self.driver_pth)
-        self.service.start()
-        capabilities = {'chrome.binary': "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"}
+    def _driver(self):
+        capabilities = {'chrome.binary': self.binary_pth}
         driver = webdriver.Remote(self.service.service_url, capabilities)
         return driver
 

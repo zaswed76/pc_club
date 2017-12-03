@@ -49,14 +49,14 @@ class Web(QObject):
     finished = pyqtSignal()
     str_web_process = pyqtSignal(str, str)
 
-    def __init__(self, parent):
+    def __init__(self, parent, cfg):
 
         super().__init__()
+        self.cfg = cfg
         self.parent = parent
         self.running = False
         self.browser_pos_flag = False
         self._change_time = (0, 0, 0)
-        self.clubs = club.Clubs()
         self.clubs = club.Clubs()
         self.clubs.add_club(club.Club(club.Club.LES, 40))
         self.clubs.add_club(club.Club(club.Club.TROYA, 48))
@@ -109,9 +109,6 @@ class Web(QObject):
             seq = [date, date_time, h, minute, club_obj.field_name]
             seq.extend(stat.values())
             seq = tuple(seq)
-            print(seq[1:], len(seq), "line 111")
-            print("-----------------------")
-
             # записать данные
             self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
             self.keeper.commit()
@@ -136,9 +133,13 @@ class Web(QObject):
         adr = self.parent.gui.form.adress.text()
         login = self.parent.gui.form.login.text()
         password = self.parent.gui.form.password.text()
+        driver_pth = os.path.join(pth.DRIVERS_DIR,
+                                  self.cfg["driver"])
+        binary_pth = os.path.abspath(self.cfg["binary_browser_pth"])
+
 
         try:
-            self.diver = webdriver.WebDriver(adr)
+            self.diver = webdriver.WebDriver(adr, driver_pth, binary_pth)
         except selenium.common.exceptions.WebDriverException:
             self.str_web_process.emit("не удалось запустить страницу")
             self.running = False
@@ -148,8 +149,9 @@ class Web(QObject):
                               login, password)
             self.str_web_process.emit("залогинился", "log_in")
             time.sleep(2)
-
-            self.keeper = sql_keeper.Keeper(pth.DATA_FILE_2)
+            data_pth = os.path.join(pth.DATA_DIR,
+                                  self.cfg["db_name"])
+            self.keeper = sql_keeper.Keeper(data_pth)
             self.keeper.open_connect()
             self.keeper.open_cursor()
             self.keeper.create_table(sql_keeper.table())
@@ -185,7 +187,7 @@ class Main:
         self._init_gui()
 
     def _init_thread(self):
-        self.web = Web(self)
+        self.web = Web(self, self.cfg)
         self.thread = QThread()
         self.web.str_web_process.connect(self.on_web_process)
         self.web.moveToThread(self.thread)

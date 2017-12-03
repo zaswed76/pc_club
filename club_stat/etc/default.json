@@ -13,5 +13,8 @@
         35
     ],
     "step_name": "step1",
-    "current_club": "les"
+    "current_club": "les",
+    "driver": "chromedriver.exe",
+    "binary_browser_pth": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+    "db_name": "data.sql"
 }
