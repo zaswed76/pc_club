@@ -18,7 +18,7 @@ class Graph:
 
     def create_plot(self):
         freq_series = pd.Series.from_array(self.human)
-        self.ax = freq_series.plot(kind='bar', width=self.width)
+        self.ax = freq_series.plot(kind='bar', width=self.width, color='green')
         self.ax.set_title(self.title)
         self.ax.set_xlabel(self.x_lb)
         self.ax.set_ylabel(self.y_lb)
