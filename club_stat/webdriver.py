@@ -23,7 +23,11 @@ class WebDriver:
         self.browser.get(adr)
         self.browser.maximize_window()
 
-    def _driver(self):
+    def refresh(self):
+        self.browser.refresh()
+        # self.browser.get(self.browser.current_url)
+
+    def _driver(self) -> webdriver.Remote:
         capabilities = {'chrome.binary': self.binary_pth}
         driver = webdriver.Remote(self.service.service_url, capabilities)
         return driver

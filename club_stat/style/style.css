@@ -33,9 +33,12 @@ QDateTimeEdit {
 QPushButton#db_controll_app {
     /*image: url(./resource/icons/export_to_xlsx.png);*/
     border: 1px solid #3299ab;
+    border-radius: 4px;
     font-family: Helvetica;
     font-size: 11pt;
     color: #29803b;
+    text-indent: 5px;
+    margin-left: 5px;
 }
 
 

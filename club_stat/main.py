@@ -85,12 +85,15 @@ class Web(QObject):
         date = date_time.date()
         h = date_time.time().hour
         minute = date_time.time().minute
-
+        self.diver.refresh()
+        print("refresh")
         for club_obj in self.clubs.values():
             try:
                 time.sleep(4)
                 # переключиться на клуб
                 self.diver.select_club(str(club_obj.id))
+
+
             except http.client.CannotSendRequest as er:
                 print(er, "main line 80")
             except ConnectionRefusedError as er:
@@ -111,13 +114,16 @@ class Web(QObject):
             seq = [date, date_time, h, minute, club_obj.field_name]
             seq.extend(stat.values())
             seq = tuple(seq)
+
             # записать данные
             self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
             self.keeper.commit()
             try:
-                self.str_web_process.emit(
-                    "запись: {} - {}:{} - {} - {}".format(seq[1], seq[2], seq[3],
-                                                  seq[4], seq[13]), "none")
+                line = "запись: {} - {}:{} - {} - {}".format(seq[1], seq[2], seq[3],
+                                                  seq[4], seq[13])
+                self.str_web_process.emit(line, "none")
+                print(line)
+                print("----------------")
             except Exception as er:
                 print(er, "main line 122")
 
@@ -210,7 +216,7 @@ class Main:
         self.gui = ItStat(pth.ICON_DIR)
         self.gui.closeEvent = self.closeEvent
         self.gui.show()
-        self.gui.resize(500, 350)
+        self.gui.resize(500, 370)
         self.gui.set_tray_icon()
         self.gui.set_menu()
 
