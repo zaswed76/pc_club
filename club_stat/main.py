@@ -85,8 +85,12 @@ class Web(QObject):
         date = date_time.date()
         h = date_time.time().hour
         minute = date_time.time().minute
-        self.diver.refresh()
-        print("refresh")
+        try:
+            self.diver.refresh()
+            print("refresh")
+        except Exception as er:
+            print(er, "main line 92")
+
         for club_obj in self.clubs.values():
             try:
                 time.sleep(4)
@@ -95,9 +99,9 @@ class Web(QObject):
 
 
             except http.client.CannotSendRequest as er:
-                print(er, "main line 80")
+                print(er, "main line 102")
             except ConnectionRefusedError as er:
-                print(er, "main line 80")
+                print(er, "main line 104")
             time.sleep(2)
 
             # получить данные
@@ -110,14 +114,18 @@ class Web(QObject):
                      (stat["guest"], stat["resident"],
                       stat["school"])])
             except Exception as er:
-                print(er, "main line 107")
+                print(er, "main line 117")
             seq = [date, date_time, h, minute, club_obj.field_name]
             seq.extend(stat.values())
             seq = tuple(seq)
 
             # записать данные
-            self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
-            self.keeper.commit()
+            try:
+                self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
+                self.keeper.commit()
+            except Exception as er:
+                print(er, "main line 127")
+
             try:
                 line = "запись: {} - {}:{} - {} - {}".format(seq[1], seq[2], seq[3],
                                                   seq[4], seq[13])
@@ -169,7 +177,7 @@ class Web(QObject):
             try:
                 self.read_data()
             except Exception as er:
-                print(er)
+                print(er, "main line 172")
                 # self.keeper.close()
                 # self.diver.close()
 
