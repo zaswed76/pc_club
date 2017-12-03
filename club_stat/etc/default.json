@@ -16,5 +16,6 @@
     "current_club": "les",
     "driver": "chromedriver.exe",
     "binary_browser_pth": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-    "db_name": "data.sql"
+    "db_name": "data.sql",
+    "adr_project": "https://github.com/zaswed76/pc_club"
 }

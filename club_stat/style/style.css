@@ -53,7 +53,21 @@ QLabel#graph_lb {
     border: 1px solid #ececec;
 }
 
+QLabel#label_site {
+    color: #a9a9a9;
+    border-top: 1px solid #f7f7f7;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+}
 
+QLabel#label_version {
+    color: #7f7f7f;
+    border-top: 1px solid #f7f7f7;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+}
 /*View {*/
     /*border: none;*/
 /*}*/

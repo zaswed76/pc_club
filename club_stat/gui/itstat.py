@@ -24,6 +24,13 @@ class ItStat(QtWidgets.QMainWindow):
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(exitAction)
 
+    def set_version(self, version_text):
+        self.form.label_version.setText(version_text)
+
+    def set_adr_project(self, adr_text):
+        t = '''<a href={adr}>website</a>'''.format(adr=adr_text)
+        self.form.label_site.setText(t)
+
     def exit(self):
         QtWidgets.qApp.quit()
 

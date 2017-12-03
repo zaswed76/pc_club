@@ -3,11 +3,12 @@ import os
 import sys
 
 import collections
-import time, datetime
+import datetime
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QThread, QObject, pyqtSignal, pyqtSlot
 import time
 import selenium
+import club_stat
 from club_stat import webdriver, config, club
 from club_stat.sql import sql_keeper
 from club_stat import pth
@@ -249,6 +250,8 @@ class Main:
             QtCore.QTime(*self.cfg["time_change"]))
 
         self.gui.statusBar()
+        self.gui.set_version(club_stat.__version__)
+        self.gui.set_adr_project(self.cfg["adr_project"])
         sys.exit(app.exec_())
 
     def _login_changed(self, s):
