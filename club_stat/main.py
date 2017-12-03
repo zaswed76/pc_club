@@ -50,9 +50,10 @@ class Web(QObject):
     finished = pyqtSignal()
     str_web_process = pyqtSignal(str, str)
 
-    def __init__(self, parent, cfg):
+    def __init__(self, parent, cfg, data_pth):
 
         super().__init__()
+        self.data_pth = data_pth
         self.cfg = cfg
         self.parent = parent
         self.running = False
@@ -150,9 +151,8 @@ class Web(QObject):
                               login, password)
             self.str_web_process.emit("залогинился", "log_in")
             time.sleep(2)
-            data_pth = os.path.join(pth.DATA_DIR,
-                                  self.cfg["db_name"])
-            self.keeper = sql_keeper.Keeper(data_pth)
+
+            self.keeper = sql_keeper.Keeper(self.data_pth)
             self.keeper.open_connect()
             self.keeper.open_cursor()
             self.keeper.create_table(sql_keeper.table())
@@ -184,11 +184,13 @@ class Main:
         self.web_code = dict(log_in=self.save_login)
 
         self.cfg = config.load(CONFIG_PATH)
-        self._init_thread()
+        self.data_pth = os.path.join(pth.DATA_DIR,
+                                  self.cfg["db_name"])
+        self._init_web()
         self._init_gui()
 
-    def _init_thread(self):
-        self.web = Web(self, self.cfg)
+    def _init_web(self):
+        self.web = Web(self, self.cfg, self.data_pth)
         self.thread = QThread()
         self.web.str_web_process.connect(self.on_web_process)
         self.web.moveToThread(self.thread)
@@ -293,7 +295,7 @@ class Main:
         self.gui.form.start.setDisabled(self.web.running)
 
     def export_to_xlsx(self):
-        out_app = OutApp(pth.DATA_FILE_2, self.web.clubs)
+        out_app = OutApp(self.data_pth, self.web.clubs)
         out_app.set_step(self.cfg["step_name"])
         out_app.set_club(self.cfg["current_club"])
         out_app.show()
