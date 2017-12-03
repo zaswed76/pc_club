@@ -4,7 +4,7 @@ import datetime
 import tempfile
 
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
-from PyQt5.QtCore import QDate, QDateTime
+
 from club_stat.sql import sql_keeper
 from club_stat import mstat
 from club_stat.gui.graph import graph
@@ -49,10 +49,10 @@ class OutApp(QtWidgets.QWidget):
         self.form.dt_end_edit.setDate(d_end)
         self.form.dt_end_edit.setTime(t_end)
 
-        update_btn_size = QtCore.QSize(22, 22)
+        # update_btn_size = QtCore.QSize(22, 22)
         self.form.update_graph_btn.clicked.connect(self.update_graph)
-        self.form.update_graph_btn.setIconSize(update_btn_size)
-        self.form.update_graph_btn.setFixedSize(update_btn_size)
+        # self.form.update_graph_btn.setIconSize(update_btn_size)
+        # self.form.update_graph_btn.setFixedSize(update_btn_size)
 
         self.form.les.toggled.connect(self.update_graph)
         self.form.akadem.toggled.connect(self.update_graph)

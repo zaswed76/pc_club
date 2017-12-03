@@ -14,7 +14,8 @@ setup(
         long_description=open(
                 join(dirname(__file__), 'README.rst')).read(),
 
-        install_requires=["PyQt5", "selenium"],
+        install_requires=["PyQt5", "selenium", "pandas",
+                          "matplotlib"],
         entry_points={
             'console_scripts':
                 ['itstat = club_stat.main:Main']

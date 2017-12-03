@@ -224,8 +224,8 @@ class Main:
 
         # Export btn
 
-        self.gui.form.export_to_xlsx.clicked.connect(
-            self.export_to_xlsx)
+        self.gui.form.db_controll_app.clicked.connect(
+            self.db_controll_app)
 
         # Password
         self.gui.form.password.setEchoMode(
@@ -294,14 +294,13 @@ class Main:
         self.gui.form.stop.setDisabled(not self.web.running)
         self.gui.form.start.setDisabled(self.web.running)
 
-    def export_to_xlsx(self):
+    def db_controll_app(self):
         out_app = OutApp(self.data_pth, self.web.clubs)
         out_app.set_step(self.cfg["step_name"])
         out_app.set_club(self.cfg["current_club"])
         out_app.show()
 
     def closeEvent(self, event):
-
         event.ignore()
         self.gui.hide()
         self.gui.tray_icon.showMessage(

@@ -290,7 +290,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QPushButton" name="export_to_xlsx">
+     <widget class="QPushButton" name="db_controll_app">
       <property name="geometry">
        <rect>
         <x>0</x>

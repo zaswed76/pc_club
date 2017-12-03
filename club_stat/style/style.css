@@ -30,27 +30,40 @@ QDateTimeEdit {
 }
 
 
-QPushButton#export_to_xlsx {
-    image: url(./resource/icons/export_to_xlsx.png);
-    border-top: none;
-    border-right: none;
-    border-bottom: none;
-    border-left: none;
-
-
+QPushButton#db_controll_app {
+    /*image: url(./resource/icons/export_to_xlsx.png);*/
+    border: 1px solid #3299ab;
+    font-family: Helvetica;
+    font-size: 11pt;
+    color: #29803b;
 }
 
-QPushButton#update_graph_btn {
-    image: url(../resource/icons/update_graph.png);
-    border-top: none;
-    border-right: none;
-    border-bottom: none;
-    border-left: none;
 
+
+
+QPushButton#update_graph_btn {
+    border: 1px solid #3299ab;
+    border-radius: 4px;
+    font-family: Helvetica;
+    font-size: 12pt;
+    color: #29803b;
+}
+
+QPushButton#export_to_png {
+    border: 1px solid #3299ab;
+    border-radius: 4px;
+    font-family: Helvetica;
+    font-size: 12pt;
+    color: #29803b;
+    text-indent: 2px;
+}
+
+OutApp {
+    background-color: #ebebeb;
 }
 
 QLabel#graph_lb {
-    border: 1px solid #ececec;
+    border: 1px solid #cecece;
 }
 
 QLabel#label_site {
@@ -68,6 +81,9 @@ QLabel#label_version {
     border-bottom: none;
     border-left: none;
 }
+
+
+
 /*View {*/
     /*border: none;*/
 /*}*/
