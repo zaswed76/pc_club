@@ -1,0 +1,9 @@
+log_ex.py[LINE:17]# ERROR    [2017-12-04 22:18:55,889]  This is an error message
+log_ex.py[LINE:19]# CRITICAL [2017-12-04 22:18:55,889]  FATAL!!!
+log_ex.py[LINE:13]# INFO     [2017-12-04 22:19:19,189]  This is an info message
+log_ex.py[LINE:15]# WARNING  [2017-12-04 22:19:19,190]  This is a warning
+log_ex.py[LINE:17]# ERROR    [2017-12-04 22:19:19,190]  This is an error message
+log_ex.py[LINE:19]# CRITICAL [2017-12-04 22:19:19,190]  FATAL!!!
+log_ex.py[LINE:11]# INFO     [2017-12-04 22:19:36,330]  This is an info message
+log_ex.py[LINE:11]# INFO     [2017-12-04 22:19:39,436]  This is an info message
+log_ex.py[LINE:11]# INFO     [2017-12-04 22:21:24,304]  This is an info message

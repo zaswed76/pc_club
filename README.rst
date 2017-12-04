@@ -1,4 +1,4 @@
-club_stattstat
+itstat
 =====================
 
 
@@ -7,32 +7,5 @@ club_stattstat
 
 **Установка**::
 
-  pip install --upgrade git+https://github.com/zaswed76/pc_club.git
+  pip3 install --upgrade git+https://github.com/zaswed76/pc_club.git
 
-**или (что бы установить в каталог пользователя)**::
-
-  pip install
-
-.. note:: При ошибке импорта при запуске -
-
-
-
-**делаем следующее:**
-
-* идём сюда
-
-* ищем пакет
-
-* качаем нужную версию
-
-* в терминале pip3 install path_to_whl
-
-**Не факт
-
-.. note:: можно использовать pip3
-
-
-Описание конфига:
-------------------
-
-* добавлена

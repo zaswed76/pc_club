@@ -177,8 +177,9 @@ class Keeper():
 if __name__ == '__main__':
     # region открыть базу
     # path = "data.db"
+    import os
     from club_stat import pth
-    path = pth.DATA_FILE_2
+    path = os.path.join(pth.DATA_DIR, "data.sql")
     kp = Keeper(path)
     kp.open_connect()
     kp.open_cursor()

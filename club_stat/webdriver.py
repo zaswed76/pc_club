@@ -25,7 +25,7 @@ class WebDriver:
 
     def refresh(self):
         self.browser.refresh()
-        # self.browser.get(self.browser.current_url)
+
 
     def _driver(self) -> webdriver.Remote:
         capabilities = {'chrome.binary': self.binary_pth}

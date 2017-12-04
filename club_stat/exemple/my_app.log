@@ -1,0 +1,13 @@
+2017-12-04 15:38:36.386 DEBUG in 'log_ex' at line 11: this is test message
+2017-12-04 15:38:36.386 CRITICAL in 'log_ex' at line 13: критическая ошибка! Вследствии чего Мир , возможно, был удален
+2017-12-04 15:42:08.479 DEBUG in 'log_ex' at line 11: this is test message
+2017-12-04 15:42:08.479 CRITICAL in 'log_ex' at line 13: критическая ошибка! Вследствии чего Мир , возможно, был удален
+2017-12-04 16:27:12.520 DEBUG in 'log_ex' at line 11: this is test message
+2017-12-04 16:27:12.522 CRITICAL in 'log_ex' at line 13: критическая ошибка! Вследствии чего Мир , возможно, был удален
+2017-12-04 16:27:12.522 ERROR in 'log_ex' at line 14: ошибка
+2017-12-04 16:28:48DEBUG in 'log_ex' at line 11: this is test message
+2017-12-04 16:28:48CRITICAL in 'log_ex' at line 13: критическая ошибка! Вследствии чего Мир , возможно, был удален
+2017-12-04 16:28:48ERROR in 'log_ex' at line 14: ошибка
+2017-12-04 16:28:58 DEBUG in 'log_ex' at line 11: this is test message
+2017-12-04 16:28:58 CRITICAL in 'log_ex' at line 13: критическая ошибка! Вследствии чего Мир , возможно, был удален
+2017-12-04 16:28:58 ERROR in 'log_ex' at line 14: ошибка

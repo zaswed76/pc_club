@@ -1,0 +1,36 @@
+2017-12-04 17:36:01.697 INFO in 'log_ex' at line 26: info message
+2017-12-04 17:36:01.697 WARNING in 'log_ex' at line 27: warn message
+2017-12-04 17:36:01.697 ERROR in 'log_ex' at line 28: error message
+2017-12-04 17:36:01.698 ERROR in 'log_ex' at line 32: exception message
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 30, in <module>
+    a=1/0
+ZeroDivisionError: division by zero
+2017-12-04 17:36:01.698 CRITICAL in 'log_ex' at line 33: critical message
+2017-12-04 17:44:20.127 INFO in 'log_ex' at line 26: info message
+2017-12-04 17:44:20.127 WARNING in 'log_ex' at line 27: warn message
+2017-12-04 17:44:20.127 ERROR in 'log_ex' at line 28: error message
+2017-12-04 17:44:20.127 ERROR in 'log_ex' at line 32: exception message
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 30, in <module>
+    a=1/0
+ZeroDivisionError: division by zero
+2017-12-04 17:44:20.128 CRITICAL in 'log_ex' at line 33: critical message
+2017-12-04 17:47:49.58 INFO in 'log_ex' at line 26: info message
+2017-12-04 17:47:49.58 WARNING in 'log_ex' at line 27: warn message
+2017-12-04 17:47:49.58 ERROR in 'log_ex' at line 28: error message
+2017-12-04 17:47:49.58 ERROR in 'log_ex' at line 32: exception message
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 30, in <module>
+    a=1/0
+ZeroDivisionError: division by zero
+2017-12-04 17:47:49.59 CRITICAL in 'log_ex' at line 33: critical message
+2017-12-04 18:09:48.559 INFO in 'log_ex' at line 26: info message
+2017-12-04 18:09:48.560 WARNING in 'log_ex' at line 27: warn message
+2017-12-04 18:09:48.560 ERROR in 'log_ex' at line 28: error message
+2017-12-04 18:09:48.560 ERROR in 'log_ex' at line 32: exception message
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 30, in <module>
+    a=1/0
+ZeroDivisionError: division by zero
+2017-12-04 18:09:48.561 CRITICAL in 'log_ex' at line 33: critical message
