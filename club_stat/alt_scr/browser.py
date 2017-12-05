@@ -18,6 +18,7 @@ from club_stat import pth
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import selenium.webdriver.chrome.service as service
+from club_stat.log import log
 
 class Browser:
     def __init__(self, driver_pth, binary_pth):
@@ -27,7 +28,9 @@ class Browser:
         self.service = service.Service(self.driver_pth)
         self.service.start()
         self.driver = self.get_driver()
-        print(self.driver)
+
+
+
 
         # self.driver.maximize_window()
 
@@ -40,12 +43,15 @@ class Browser:
         self.driver.get(adr)
 
 
-    def log_in(self):
+    def log_in(self, login_id, password_id, submit_name,
+                        login, password):
+        username = self.driver.find_element_by_id(login_id)
+        username.send_keys(login)
+        passw = self.driver.find_element_by_id(password_id)
+        passw.send_keys(password)
+        m = self.driver.find_element_by_class_name(submit_name)
+        m.click()
 
-        """
-        залогинится
-        """
-        return
 
 
 if __name__ == '__main__':
@@ -53,13 +59,18 @@ if __name__ == '__main__':
     login_id = 'enter_login'
     password_id = 'enter_password'
     submit_name = 'but_m'
-    login = "zaswed"
+    login = "zaswedf"
     password = "fasadAQ9"
 
 
     cfg = config.load(pth.CONFIG_PATH)
-    driver_pth = os.path.join(pth.DRIVERS_DIR,
-                                  cfg["driver"])
+    driver_pth = os.path.join(pth.DRIVERS_DIR, cfg["driver"])
+
     binary_pth = os.path.abspath(cfg["binary_browser_pth"])
 
     browser = Browser(driver_pth, binary_pth)
+    browser.get_page(adr)
+    assert "Shell" in browser.driver.title
+    browser.log_in(login_id, password_id, submit_name, login, password)
+    assert "Карта клуба" in browser.driver.title
+    print(browser.driver.title)

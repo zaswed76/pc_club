@@ -1,6 +1,0 @@
-alt_scr.py[LINE:15]# ERROR    [2017-12-05 00:15:00,011]  This is an info message
-alt_scr.py[LINE:15]# ERROR    [2017-12-05 00:15:05,002]  This is an info message
-alt_scr.py[LINE:14]# WARNING  [2017-12-05 00:16:05,003]  info
-alt_scr.py[LINE:15]# ERROR    [2017-12-05 00:16:05,003]  This is an info message
-alt_scr.py[LINE:14]# WARNING  [2017-12-05 00:16:10,003]  info
-alt_scr.py[LINE:15]# ERROR    [2017-12-05 00:16:10,004]  This is an info message

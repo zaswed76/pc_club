@@ -1,0 +1,47 @@
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+ZeroDivisionError: division by zero
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+ZeroDivisionError: division by zero
+WARNING:__main__:warn
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+TypeError: unsupported operand type(s) for /: 'int' and 'str'
+WARNING:__main__:warn
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+TypeError: unsupported operand type(s) for /: 'int' and 'list'
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+ZeroDivisionError: division by zero
+WARNING:__main__:warn
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+TypeError: unsupported operand type(s) for /: 'int' and 'str'
+WARNING:__main__:warn
+WARNING:__main__:warn
+ERROR:ex:Error!
+Traceback (most recent call last):
+  File "D:/0SYNC/python_projects/pc_club/club_stat/exemple/log_ex.py", line 26, in f
+    r = 5/x
+TypeError: unsupported operand type(s) for /: 'int' and 'list'
+WARNING:__main__:warn
