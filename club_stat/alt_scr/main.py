@@ -4,7 +4,7 @@ from club_stat import config, pth
 from club_stat.alt_scr.browser import Browser
 
 
-class Main:
+class Br:
     def __init__(self):
         self.cfg = config.load(pth.CONFIG_PATH)
         self.adr = self.cfg["last_address"]
@@ -12,7 +12,7 @@ class Main:
         self.password_id = 'enter_password'
         self.submit_name = 'but_m'
         self.login = self.cfg["last_login"]
-        self._password = None
+        self._password = "fasadAQ9"
 
         self.driver_pth = os.path.join(pth.DRIVERS_DIR, self.cfg["driver"])
 
@@ -38,12 +38,11 @@ class Main:
                        self.submit_name, self.login, self.password)
         assert "Карта клуба" in self.browser.driver.title
 
-def main():
-    main = Main()
-    main.get_driver()
-    main.get_page()
-    main.password = input("введите пароль\n")
-    main.log_in()
 
-if __name__ == '__main__':
-    main()
+m = Br()
+m.get_driver()
+m.get_page()
+    # m.password = input("введите пароль\n")
+    # print(m.password)
+m.log_in()
+

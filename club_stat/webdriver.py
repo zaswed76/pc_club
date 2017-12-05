@@ -76,9 +76,7 @@ if __name__ == '__main__':
     driver = WebDriver(adr, WebDriver.Firefox)
     driver.log_in(login_id, password_id, submit_name,
                             login, password)
-    driver.cu()
 
-    driver.close()
 
 
 

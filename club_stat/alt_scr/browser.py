@@ -19,6 +19,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import selenium.webdriver.chrome.service as service
 from club_stat.log import log
+import time
 
 class Browser:
     def __init__(self, driver_pth, binary_pth):
@@ -52,14 +53,19 @@ class Browser:
         m = self.driver.find_element_by_class_name(submit_name)
         m.click()
 
+    def select_club(self, club:str):
+        select = Select(self.driver.find_element_by_id('club_id'))
+        select.select_by_value(club)
 
+    def get_data(self, field):
+        return self.driver.find_element_by_id(field).text
 
 if __name__ == '__main__':
     adr = "http://adminold.itland.enes.tech/index.php/map"
     login_id = 'enter_login'
     password_id = 'enter_password'
     submit_name = 'but_m'
-    login = "zaswedf"
+    login = "zaswed"
     password = "fasadAQ9"
 
 
@@ -74,3 +80,8 @@ if __name__ == '__main__':
     browser.log_in(login_id, password_id, submit_name, login, password)
     assert "Карта клуба" in browser.driver.title
     print(browser.driver.title)
+
+    for i in range(1, 5):
+        browser.select_club(str(i))
+        print(browser.get_data("taken"))
+        time.sleep(1)
