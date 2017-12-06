@@ -85,11 +85,11 @@ class Web(QObject):
         date = date_time.date()
         h = date_time.time().hour
         minute = date_time.time().minute
-        try:
-            self.diver.refresh()
-            print("refresh")
-        except Exception as er:
-            print(er, "main line 92")
+        # try:
+        #     self.diver.refresh()
+        #     print("refresh")
+        # except Exception as er:
+        #     print(er, "main line 92")
 
         for club_obj in self.clubs.values():
             try:

@@ -18,7 +18,7 @@ from club_stat import pth
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import selenium.webdriver.chrome.service as service
-from club_stat.log import log
+from club_stat.alt_scr import passw
 import time
 
 class Browser:
@@ -77,9 +77,14 @@ if __name__ == '__main__':
     browser = Browser(driver_pth, binary_pth)
     browser.get_page(adr)
     assert "Shell" in browser.driver.title
-    browser.log_in(login_id, password_id, submit_name, login, password)
-    assert "Карта клуба" in browser.driver.title
-    print(browser.driver.title)
+    while True:
+        login = passw.get_log()
+        password = passw.get_pass()
+        browser.log_in(login_id, password_id, submit_name, login, password)
+        if "Карта клуба" in browser.driver.title:
+            print("вошли в карту клуба")
+            break
+
 
     for i in range(1, 5):
         browser.select_club(str(i))
