@@ -1,0 +1,25 @@
+alt_scr.py[LINE:20]# WARNING  [2017-12-08 21:06:49,942]  старт
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:09:00,002]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:09:00,003]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:12:00,008]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:12:00,009]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:15:00,015]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:15:00,016]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:18:00,002]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:18:00,002]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:21:00,007]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:21:00,008]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:24:00,002]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:24:00,002]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:27:00,013]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:27:00,014]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:30:00,009]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:30:00,010]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:33:00,001]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:33:00,002]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:36:00,007]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:36:00,008]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:39:00,001]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:39:00,001]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:42:00,010]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:42:00,011]  This is an info message

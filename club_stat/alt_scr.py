@@ -15,7 +15,10 @@ def job_function():
     logging.error(u'This is an info message')
 
 sched = BlockingScheduler()
-sched.add_job(job_function, 'cron', hour='*', minute="*", second="*/5")
+sched.add_job(job_function, 'interval', minutes=3, start_date="2017-12-8 21:00:00")
+
+logging.warning(u'старт')
 sched.start()
+
 
 
