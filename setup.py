@@ -17,7 +17,7 @@ setup(
         install_requires=["PyQt5", "selenium", "pandas",
                           "matplotlib"],
         entry_points={
-            'gui_scripts':
+            'console_scripts':
                 ['itstat = club_stat.main:Main']
         }
 

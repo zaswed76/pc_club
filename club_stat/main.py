@@ -15,6 +15,7 @@ from club_stat import pth
 
 from club_stat.gui.itstat import ItStat
 from club_stat.gui.out_app import OutApp
+from club_stat.log.log import log
 
 adr = "http://adminold.itland.enes.tech/index.php/map"
 
@@ -96,6 +97,7 @@ class Web(QObject):
                 time.sleep(4)
                 # переключиться на клуб
                 self.diver.select_club(str(club_obj.id))
+                log.debug("переключился на клуб №-{}".format(str(club_obj.id)))
 
 
             except http.client.CannotSendRequest as er:
@@ -114,7 +116,7 @@ class Web(QObject):
                      (stat["guest"], stat["resident"],
                       stat["school"])])
             except Exception as er:
-                print(er, "main line 117")
+                log.error(er)
             seq = [date, date_time, h, minute, club_obj.field_name]
             seq.extend(stat.values())
             seq = tuple(seq)
@@ -124,16 +126,15 @@ class Web(QObject):
                 self.keeper.add_line(sql_keeper.ins_club_stat(), seq)
                 self.keeper.commit()
             except Exception as er:
-                print(er, "main line 127")
+                log.error(er)
 
             try:
                 line = "запись: {} - {}:{} - {} - {}".format(seq[1], seq[2], seq[3],
                                                   seq[4], seq[13])
                 self.str_web_process.emit(line, "none")
-                print(line)
-                print("----------------")
+                log.debug(str(line))
             except Exception as er:
-                print(er, "main line 122")
+                log.error(er)
 
     def web_process_stop(self):
         self.running = False

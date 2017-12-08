@@ -23,57 +23,27 @@ def qt_message_handler(mode, context, message):
     print('  %s: %s\n' % (mode, message))
 
 
-QtCore.qInstallMessageHandler(qt_message_handler)
-
-class BtnLab(QtWidgets.QLabel):
-    signal = pyqtSignal(str)
-    def __init__(self, text, color, parent=None, *__args):
-        super().__init__(*__args)
-        self.color = color
-        self.setStyleSheet("background-color: {}".format(color))
-
-    def mousePressEvent(self, event):
-        # генерируем сигнал
-        self.signal.emit(self.color)
-
-
-class Widget(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
-        self.dialog = Dialog()
-        # соединяем сигнал со слотом
-        self.dialog.btn1.signal.connect(self.press_lb)
-        self.dialog.btn2.signal.connect(self.press_lb)
-        self.dialog.show()
-
-
-    def press_lb(self, color):
-        self.setStyleSheet("background-color: {}".format(color))
 
 
 
+ # -*- coding: UTF-8 -*-
+import sys
+import time
+from PyQt5 import QtWidgets
+def on_clicked():
 
-class Dialog(QtWidgets.QFrame):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        box = QtWidgets.QHBoxLayout(self)
-        self.btn1 = BtnLab("1", "green")
-        self.btn1.setStyleSheet("background-color: green")
-
-        self.btn2 = BtnLab("2", "blue")
-        self.btn2.setStyleSheet("background-color: blue")
-
-        box.addWidget(self.btn1)
-        box.addWidget(self.btn2)
-
-
-
-
-
+    button.setEnabled(False)
+    QtWidgets.QApplication.processEvents()
+    for i in range(1000000000):
+        print(i**3)
+        # time.sleep(1)
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    # app.setStyleSheet(open('./etc/{0}.qss'.format('style'), "r").read())
-    main = Widget()
-    main.show()
+    window = QtWidgets.QWidget()
+    button = QtWidgets.QPushButton('Button')
+    button.clicked.connect(on_clicked)
+    box = QtWidgets.QHBoxLayout()
+    box.addWidget(button)
+    window.setLayout(box)
+    window.show()
     sys.exit(app.exec_())
