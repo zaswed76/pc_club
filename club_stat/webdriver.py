@@ -62,7 +62,12 @@ class WebDriver:
     def get_table(self):
         text = self.browser.page_source
         soup = BeautifulSoup(text)
-        soup.findAll('b')
+        table = soup.find('table', id="map")
+        for tr in table.find_all('tr'):
+            for i in tr:
+                r = i
+                print(r)
+
 
 
 
