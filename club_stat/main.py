@@ -182,9 +182,9 @@ class Web(QObject):
                 # self.keeper.close()
                 # self.diver.close()
 
-            if not self.browser_pos_flag:
-                self.diver.browser.set_window_position(-10000, 0)
-                self.browser_pos_flag = True
+            # if not self.browser_pos_flag:
+            #     self.diver.browser.set_window_position(-10000, 0)
+            #     self.browser_pos_flag = True
             h, m, s = self.change_time
             time.sleep(((h * 3600) + (m * 60) + s) - 4)
 
