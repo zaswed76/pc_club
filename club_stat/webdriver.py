@@ -56,26 +56,31 @@ class WebDriver:
         select = Select(self.browser.find_element_by_id('club_id'))
         return [x.text for x in select.options if x]
 
-    def cu(self):
-        obj = self.browser.find_element_by_class_name("map_lft")
+    def get_table(self):
+        obj = self.browser.find_element_by_id("map")
+        print(obj.find_element_by_tag_name("tr").text)
 
-        rows = obj.find_elements_by_tag_name("tr")  # get all of the rows in the table
-        for row in rows:
-            col = row.find_elements_by_tag_name("td")[1]
-            print(col.text) #prints text from the element
+
 
 
 
 if __name__ == '__main__':
+    from club_stat import pth, config
+    cfg = config.load(pth.CONFIG_PATH)
     adr = "http://adminold.itland.enes.tech/index.php/map"
     login_id = 'enter_login'
     password_id = 'enter_password'
     submit_name = 'but_m'
     login = "zaswed"
     password = "fasadAQ9"
-    driver = WebDriver(adr, WebDriver.Firefox)
+    driver_pth = os.path.join(pth.DRIVERS_DIR,
+                                  cfg["driver"])
+    binary_pth = os.path.abspath(cfg["binary_browser_pth"])
+    driver = WebDriver(adr, driver_pth, binary_pth)
     driver.log_in(login_id, password_id, submit_name,
                             login, password)
+    driver.get_table()
+    driver.close()
 
 
 
