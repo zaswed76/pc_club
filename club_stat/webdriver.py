@@ -4,7 +4,9 @@ from club_stat import pth
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import selenium.webdriver.chrome.service as service
-import http
+
+
+
 
 enter_login = 'enter_login'
 enter_password = 'enter_password'
@@ -57,8 +59,8 @@ class WebDriver:
         return [x.text for x in select.options if x]
 
     def get_table(self):
-        obj = self.browser.find_element_by_id("map")
-        print(obj.find_element_by_tag_name("tr").text)
+        obj = self.browser.page_source
+        print(obj)
 
 
 
