@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import selenium.webdriver.chrome.service as service
 
+from bs4 import BeautifulSoup
 
 
 
@@ -59,8 +60,9 @@ class WebDriver:
         return [x.text for x in select.options if x]
 
     def get_table(self):
-        obj = self.browser.page_source
-        print(obj)
+        text = self.browser.page_source
+        soup = BeautifulSoup(text)
+        soup.findAll('b')
 
 
 
