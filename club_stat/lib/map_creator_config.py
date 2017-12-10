@@ -1,4 +1,4 @@
-import os
+import os, re
 from club_stat.webdriver import WebDriver
 from bs4 import BeautifulSoup
 
@@ -12,10 +12,14 @@ class MapCreator(WebDriver):
         table = soup.find('table', id="map")
         for tr in table.find_all('tr'):
             for d in tr:
-                tag = d.findAll("span")
-                if tag:
-                    print(tag[0]["id"])
+                t = d.findAll("span")
+                if t:
+                    tag = t[0]
+                    print(tag)
+                    print(re.sub(r'span', '', str(tag)))
+
                     print("----------------------")
+                """<span class="comp bg_off" data-id="111237" data-ip="172.16.11.48" data-mac="00:24:21:a0:d9:54" data-unauth="" id="pc111237" title="">48</span>"""
             # for i in tr:
             #     for span_tag in i.findAll('span'):
             #         span_tag.replace_with('')
