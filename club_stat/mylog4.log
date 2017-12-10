@@ -23,3 +23,5 @@ alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:39:00,001]  info
 alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:39:00,001]  This is an info message
 alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:42:00,010]  info
 alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:42:00,011]  This is an info message
+alt_scr.py[LINE:14]# WARNING  [2017-12-08 21:45:00,012]  info
+alt_scr.py[LINE:15]# ERROR    [2017-12-08 21:45:00,013]  This is an info message
