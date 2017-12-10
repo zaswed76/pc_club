@@ -1,12 +1,15 @@
 import os, re
 from club_stat.webdriver import WebDriver
 from bs4 import BeautifulSoup
+import pandas as pd
+import lxml, html5lib
 
 class MapCreator(WebDriver):
     def __init__(self, adr, driver_pth, binary_pth):
         super().__init__(adr, driver_pth, binary_pth, )
 
     def get_table(self):
+        ddd = dict()
         text = self.browser.page_source
         soup = BeautifulSoup(text)
         table = soup.find('table', id="map")
@@ -15,11 +18,14 @@ class MapCreator(WebDriver):
                 t = d.findAll("span")
                 if t:
                     tag = t[0]
-                    print(tag)
-                    print(re.sub(r'span', '', str(tag)))
+                    ddd[tag["id"]] = {"class":tag["class"], "title": tag["title"]}
+        print(ddd)
+                # """<span class="comp bg_off" data-id="111237" data-ip="172.16.11.48" data-mac="00:24:21:a0:d9:54" data-unauth="" id="pc111237" title="">48</span>"""
+                    # df = pd.read_html(str(tag))
+                    # print(df[0].to_json(orient='records'))
+                    #
+                    # print("----------------------")
 
-                    print("----------------------")
-                """<span class="comp bg_off" data-id="111237" data-ip="172.16.11.48" data-mac="00:24:21:a0:d9:54" data-unauth="" id="pc111237" title="">48</span>"""
             # for i in tr:
             #     for span_tag in i.findAll('span'):
             #         span_tag.replace_with('')
