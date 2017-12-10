@@ -65,10 +65,9 @@ class WebDriver:
         table = soup.find('table', id="map")
         for tr in table.find_all('tr'):
             for i in tr:
-                r = i.findAll("span", id="pc16")
+                r = i.findAll("span", id="pc111253")
                 if r:
-                    print(r[0]["id"])
-                    print(r[0])
+                    print(r)
                     print("------------------------")
 
 
@@ -78,6 +77,7 @@ class WebDriver:
 
 if __name__ == '__main__':
     from club_stat import pth, config
+    import time
     cfg = config.load(pth.CONFIG_PATH)
     adr = "http://adminold.itland.enes.tech/index.php/map"
     login_id = 'enter_login'
@@ -91,6 +91,10 @@ if __name__ == '__main__':
     driver = WebDriver(adr, driver_pth, binary_pth)
     driver.log_in(login_id, password_id, submit_name,
                             login, password)
+    time.sleep(1)
+
+    driver.select_club("4")
+    time.sleep(1)
     driver.get_table()
     driver.close()
 
