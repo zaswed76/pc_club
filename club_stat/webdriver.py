@@ -65,8 +65,10 @@ class WebDriver:
         table = soup.find('table', id="map")
         for tr in table.find_all('tr'):
             for i in tr:
-                r = i
-                print(r)
+                r = i.findAll("span", id="pc18")
+                if r:
+                    print(r)
+                    print("------------------------")
 
 
 
