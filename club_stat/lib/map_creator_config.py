@@ -18,8 +18,7 @@ class MapCreator(WebDriver):
                 t = d.findAll("span")
                 if t:
                     tag = t[0]
-                    ddd[tag["id"]] = {"class":tag["class"], "title": tag["title"]}
-        print(ddd)
+                    print(tag)
                 # """<span class="comp bg_off" data-id="111237" data-ip="172.16.11.48" data-mac="00:24:21:a0:d9:54" data-unauth="" id="pc111237" title="">48</span>"""
                     # df = pd.read_html(str(tag))
                     # print(df[0].to_json(orient='records'))
