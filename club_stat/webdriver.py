@@ -65,12 +65,14 @@ class WebDriver:
         table = soup.find('table', id="map")
         for tr in table.find_all('tr'):
             for i in tr:
-                r = i.findAll("span", id="pc111253")
+                r = i.findAll("span")
                 if r:
-                    print(r)
-                    print("------------------------")
+                    tag = r[0]
+                    print(tag)
+                    print("--------------")
 
-
+    def tag_parser(self, tag):
+        _class = tag["class"]
 
 
 
@@ -91,10 +93,10 @@ if __name__ == '__main__':
     driver = WebDriver(adr, driver_pth, binary_pth)
     driver.log_in(login_id, password_id, submit_name,
                             login, password)
-    time.sleep(1)
+
 
     driver.select_club("4")
-    time.sleep(1)
+
     driver.get_table()
     driver.close()
 
