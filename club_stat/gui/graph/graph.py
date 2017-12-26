@@ -59,21 +59,21 @@ class Graph:
         plt.ylim([0, self.max])
         rects = self.ax.patches
 
-        for rect, label in zip(rects, human):
-            height = rect.get_height()
-            self.ax.text(rect.get_x() + rect.get_width() / 2,
-                         height + 0.4,
-                         label, ha='center', va='bottom')
-            if len(self.times) < 24:
-                size = 10
-            else:
-                size = 8
-
-            font = {'family': 'Calibri',
-                    'size': size}
-
-
-            matplotlib.rc('font', **font)
+        # for rect, label in zip(rects, human):
+        #     height = rect.get_height()
+        #     self.ax.text(rect.get_x() + rect.get_width() / 2,
+        #                  0,
+        #                  label, ha='center', va='bottom')
+        #     if len(self.times) < 24:
+        #         size = 10
+        #     else:
+        #         size = 8
+        #
+        #     font = {'family': 'Calibri',
+        #             'size': size}
+        #
+        #
+        #     matplotlib.rc('font', **font)
 
 
     def show(self):
@@ -93,8 +93,8 @@ if __name__ == '__main__':
     mans = [6, 7, 18, 19, 10, 15, 17, 12, 16, 17, 17, 23, 27,
             28, 17, 18, 19, 10, 15, 17, 12, 26, 17, 13]
 
-    mans2 = [6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3, 7, 8,
-            6, 7, 8, 9, 10, 15, 17, 12, 16, 7, 3]
+    mans2 = [0, 0, 0, 0, 0, 1, 17, 12, 16, 7, 3, 7, 8,
+            6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     x_labels0 = ["{number:02}".format(number=x) for x in
                  list(range(9, 25))]
