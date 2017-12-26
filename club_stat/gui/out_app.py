@@ -140,8 +140,18 @@ class OutApp(QtWidgets.QWidget):
 
 
 if __name__ == '__main__':
+    from club_stat import config, pth
+    clubs = club.Clubs()
+    clubs.add_club(club.Club(club.Club.LES, 40))
+    clubs.add_club(club.Club(club.Club.TROYA, 48))
+    clubs.add_club(club.Club(club.Club.AKADEM, 50))
+    clubs.add_club(club.Club(club.Club.DREAM, 60))
+
+    cfg = config.load(pth.CONFIG_PATH)
+    data_pth = os.path.join(pth.DATA_DIR,
+                                  cfg["db_name"])
     app = QtWidgets.QApplication(sys.argv)
     # app.setStyleSheet(open('./etc/{0}.qss'.format('style'), "r").read())
-    main = OutApp()
+    main = OutApp(data_pth, clubs)
     main.show()
     sys.exit(app.exec_())
