@@ -14,6 +14,20 @@ import numpy as np
 root = os.path.join(os.path.dirname(__file__))
 ui_pth = os.path.join(root, "ui/out_form.ui")
 
+def qt_message_handler(mode, context, message):
+    if mode == QtCore.QtInfoMsg:
+        mode = 'INFO'
+    elif mode == QtCore.QtWarningMsg:
+        mode = 'WARNING'
+    elif mode == QtCore.QtCriticalMsg:
+        mode = 'CRITICAL'
+    elif mode == QtCore.QtFatalMsg:
+        mode = 'FATAL'
+    else:
+        mode = 'DEBUG'
+    print('qt_message_handler: line: %d, func: %s(), file: %s' % (
+        context.line, context.function, context.file))
+    print('  %s: %s\n' % (mode, message))
 
 def rs(lst):
     res = []
@@ -24,6 +38,7 @@ def rs(lst):
             res.append("")
     return res
 
+QtCore.qInstallMessageHandler(qt_message_handler)
 
 class OutApp(QtWidgets.QWidget):
     def __init__(self, db_path, clubs_object):
@@ -75,6 +90,7 @@ class OutApp(QtWidgets.QWidget):
         }
 
     def update_graph(self):
+
         dt_start = self.form.dt_start_edit.dateTime().toPyDateTime()
         dt_end = self.form.dt_end_edit.dateTime().toPyDateTime()
         time_step = self.get_time_step()
@@ -83,9 +99,12 @@ class OutApp(QtWidgets.QWidget):
         keep = sql_keeper.Keeper(self.db_path)
         keep.open_connect()
         keep.open_cursor()
+        print(111)
         res = keep.sample_range_date(dt_start, dt_end, time_step,
                                      self.current_club_name)
+
         stat_obj = mstat.States(res)
+
         time_lst, mans = mstat.resort(stat_obj("mhour", "visitor"))
 
         if len(time_lst) <= 24:
